@@ -1,0 +1,16 @@
+task:
+  name: pick_place
+  object_size: [0.06, 0.06, 0.06]
+  object_mass: 0.05
+  table_height: 0.35
+
+observation:
+  use_base_pose: true
+  use_arm_joint_state: true
+  use_object_pose: true
+  use_target_pose: true
+
+action:
+  control_base_velocity: true
+  control_arm_joint_delta: true
+  control_gripper: true
