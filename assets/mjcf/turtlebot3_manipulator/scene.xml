@@ -114,7 +114,7 @@
   </actuator>
 
   <keyframe>
-    <key name="stay" qpos="0 0 0 0 1.38 -1.38 0 0" ctrl="0 0 1.38 -1.38 0"/>
+    <key name="stay" qpos="0 0 0.104311 0.027612 -0.001534 -1.638291 0 0" ctrl="0.104311 0.027612 -0.001534 -1.638291 0"/>
     <key name="moveit_home" qpos="0 0 0 -1 0.7 0.3 0.01 0.01" ctrl="0 -1 0.7 0.3 0.01"/>
   </keyframe>
 </mujoco>

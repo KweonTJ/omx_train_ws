@@ -106,11 +106,43 @@ def test_zero_residual_reference_controller_places_and_returns_to_stay():
     env.close()
 
 
+def test_randomized_grasped_starts_return_to_robot_stay():
+    config = load_config("configs/arm_grasp_randomized_ppo.yaml")
+    for stage in config["curriculum"]["stages"]:
+        if stage["name"] == "full_tower":
+            stage["environment"]["start_grasped_probability"] = 1.0
+            break
+    env = make_grasp_env(config, stage_name="full_tower")
+    zero_residual = np.zeros(4, dtype=np.float32)
+
+    for seed in range(5):
+        _, info = env.reset(seed=seed)
+        assert info["started_grasped"]
+        for _ in range(env.max_episode_steps):
+            _, _, terminated, truncated, info = env.step(zero_residual)
+            if terminated or truncated:
+                break
+        assert info["is_success"], (seed, info)
+        assert not info["collision_failure"], (seed, info)
+
+    env.close()
+
+
 def test_mixed_and_domain_randomized_stages_cover_contracts():
     config = load_config("configs/arm_grasp_randomized_ppo.yaml")
     mixed = make_grasp_env(config, stage_name="pick_place_mixed")
     tasks = {mixed.reset(seed=seed)[1]["episode_task"] for seed in range(40)}
     assert tasks == {"pick", "place"}
+
+    zero_residual = np.zeros(4, dtype=np.float32)
+    _, info = mixed.reset(seed=2)
+    assert info["episode_task"] == "place"
+    for _ in range(mixed.max_episode_steps):
+        _, _, terminated, truncated, info = mixed.step(zero_residual)
+        if terminated or truncated:
+            break
+    assert info["is_success"], info
+    assert not info["collision_failure"], info
     mixed.close()
 
     randomized = make_grasp_env(config, stage_name="sim2real_robust")

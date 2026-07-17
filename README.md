@@ -28,9 +28,10 @@ flowchart LR
 | 타워 중심 | `[0.27, 0.0, 0.085] m` |
 | 상자·배치 목표 중심 | `[0.27, 0.0, 0.1975] m` |
 | MuJoCo 계약 | `nq/nv/nu = 8/8/5` |
-| Stay 팔 자세 | `[0.0, 0.0, 1.38, -1.38] rad` |
+| Stay 팔 자세 | `[0.104311, 0.027612, -0.001534, -1.638291] rad` |
 | 정책 action | 4차원 `joint1`~`joint4` 잔차 보정, 기준 명령의 `10%` |
 | 관측 계약 | 33차원, phase 포함 |
+| PPO 장치 | CUDA GPU (`cuda`) |
 
 ## 제어 구조
 
@@ -60,7 +61,7 @@ height_robust        -> 타워 높이 ±15 mm, 상자 크기 95~105%
 sim2real_robust      -> 동역학·마찰·명령 지연·Vision 오차 동시 랜덤화
 ```
 
-Stay에서 상자로 바로 관절을 펴면 차체 상판과 충돌하므로, `PICK_REACH` 내부에서 차체 위 안전점과 전방 안전점을 순서대로 통과한다. EEF 파지 기준은 상자 중심보다 `25 mm` 위이며, 그리퍼는 파지 gate를 연속 통과하기 전까지 `0.019 m` 최대 개방을 유지한다.
+Stay에서 상자로 바로 관절을 펴면 차체 상판과 충돌하므로, `PICK_REACH` 내부에서 차체 위 안전점과 전방 안전점을 순서대로 통과한다. EEF 파지 기준은 상자 중심보다 `22.5 mm` 위이며, 그리퍼는 파지 gate를 연속 통과하기 전까지 `0.019 m` 최대 개방을 유지한다.
 
 MJCF와 필요한 STL은 저장소 안에 함께 보관한다. 정확한 해시는 `assets/mjcf/turtlebot3_manipulator/model_manifest.yaml`에서 확인한다.
 
@@ -105,8 +106,8 @@ uv run --frozen python -m train.train_grasp_ppo \
 
 # 최종 배송 정책의 전체 Sim2Real 평가
 uv run --frozen python -m eval.evaluate_grasp_policy \
-  --policy policies/latest/arm_delivery_residual_v2/arm_grasp_latest.zip \
-  --stage sim2real_robust --episodes 100
+  --policy policies/latest/arm_delivery_residual_v3_robot_stay/arm_grasp_latest.zip \
+  --stage sim2real_robust --episodes 100 --seed 20260718
 
 # 파지/배송 혼합 정책 재생
 uv run --frozen python scripts/view_grasp_policy.py
@@ -114,15 +115,15 @@ uv run --frozen python scripts/view_grasp_policy.py
 
 ## 현재 기준 결과
 
-평가 seed `20260717`을 사용한 결정론적 100 episode 결과다.
+평가 seed `20260718`을 사용한 결정론적 100 episode 결과다.
 
 | 평가 조건 | 성공률 | Pick | Place | 충돌률 |
 |---|---:|---:|---:|---:|
-| 전체 타워 파지 | `97%` | `97%` | - | `3%` |
+| 전체 타워 파지 | `98%` | `98%` | - | `2%` |
 | 전체 타워 놓기·복귀 | `99%` | - | `99%` | `1%` |
-| Pick/Place 혼합 | `98%` | `100%` | `95%` | `2%` |
-| 베이스 정지 위치 변동 | `89%` | `91.7%` | `85%` | `11%` |
-| 타워 높이·상자 크기 변동 | `89%` | `91.7%` | `85%` | `11%` |
-| 전체 Sim2Real randomization | `92%` | `91.7%` | `92.3%` | `7%` |
+| Pick/Place 혼합 | `99%` | `100%` | `98.0%` | `1%` |
+| 베이스 정지 위치 변동 | `93%` | `89.8%` | `96.1%` | `7%` |
+| 타워 높이·상자 크기 변동 | `88%` | `87.8%` | `88.2%` | `12%` |
+| 전체 Sim2Real randomization | `95%` | `95.9%` | `94.1%` | `5%` |
 
-선택된 체크포인트의 SB3 누적 counter는 `537,088` step이다. 기준 정책은 `policies/latest/arm_delivery_residual_v2/arm_grasp_latest.zip`이며 SHA-256은 `d838bab2c6b034252cdf10e52d52a9a77de3bc80f7c9c41ea82554f1b8aa50f2`다. 모델·실험 요약은 `docs/arm_delivery_model_results.md`, 학습·선택 과정과 위치 버킷별 잔여 위험은 `docs/arm_delivery_rl_training_run_2026-07-17.md`에서 확인한다.
+선택된 체크포인트의 SB3 누적 counter는 `660,000` step이다. 기준 정책은 `policies/latest/arm_delivery_residual_v3_robot_stay/arm_grasp_latest.zip`이며 SHA-256은 `07b69c0680521413ca8c40bf37c93993d74d47ccedc48f0c2ab7cb0a7991d6fe`다. 새 정책은 실기 bringup과 같은 Stay 자세로 처음부터 재학습했다. 높이 변동 단독 평가는 동일 seed의 v2 `91%`보다 낮은 `88%`이므로 양의 X 끝단을 실기 안전 제한 구간으로 유지한다. 상세 변경과 평가 근거는 `docs/PPO 재학습 기록 2026-07-18.md`에서 확인한다.

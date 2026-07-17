@@ -35,7 +35,7 @@
 | 팔 actuator | `joint1_position`~`joint4_position` |
 | 그리퍼 actuator | `gripper_position` |
 | keyframe | `stay`, `moveit_home` |
-| Stay 팔 자세 | `[0.0, 0.0, 1.38, -1.38] rad` |
+| Stay 팔 자세 | `[0.104311, 0.027612, -0.001534, -1.638291] rad` |
 | EEF 카메라 | `eef_usb_camera`, `eef_usb_camera_optical_frame` 포함 |
 | 작업 타워 | `0.13 × 0.13 × 0.17 m`, 중심 `[0.27, 0.0, 0.085]` |
 | 배송 상자 | `0.06 × 0.055 × 0.055 m`, 초기 중심 `[0.27, 0.0, 0.1975]` |
@@ -359,7 +359,7 @@ policies/exported/<policy_version>/
 | `action_scale` | `[0.014, 0.014, 0.014, 0.014]` |
 | `action_filter_coef` | `0.18` |
 | `normalization` | 관측 필드별 offset·scale |
-| `stay_joint_positions` | `[0.0, 0.0, 1.38, -1.38]` |
+| `stay_joint_positions` | `[0.104311, 0.027612, -0.001534, -1.638291]` |
 | `model_sha256` | 학습에 사용한 MJCF checksum |
 | `config_sha256` | 학습 설정 checksum |
 | `framework_versions` | Python, MuJoCo, Gymnasium, SB3 버전 |

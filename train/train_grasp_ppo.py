@@ -25,6 +25,7 @@ from envs.factory import DEFAULT_CONFIG, environment_kwargs
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ARM_JOINT_NAMES = ("joint1", "joint2", "joint3", "joint4")
 
 
 def _env_factory(
@@ -72,6 +73,20 @@ def _activation(name: str) -> type[torch.nn.Module]:
         raise ValueError(f"Unsupported policy activation: {name}") from error
 
 
+def _joint_qpos_addresses(
+    model: mujoco.MjModel, joint_names: tuple[str, ...]
+) -> np.ndarray:
+    addresses = []
+    for name in joint_names:
+        joint_id = mujoco.mj_name2id(
+            model, mujoco.mjtObj.mjOBJ_JOINT, name
+        )
+        if joint_id < 0:
+            raise ValueError(f"Missing joint in MuJoCo model: {name}")
+        addresses.append(int(model.jnt_qposadr[joint_id]))
+    return np.asarray(addresses, dtype=np.int32)
+
+
 def _write_metadata(
     output_dir: Path,
     config: dict[str, Any],
@@ -87,6 +102,9 @@ def _write_metadata(
     )
     if stay_key_id < 0:
         raise ValueError(f"Missing stay keyframe in {model_path}")
+    arm_qpos_addresses = _joint_qpos_addresses(
+        mujoco_model, ARM_JOINT_NAMES
+    )
     metadata = {
         "policy_version": output_dir.name,
         "policy_name": config["experiment"]["name"],
@@ -97,7 +115,7 @@ def _write_metadata(
         "observation_size": int(config["model"]["expected_observation_size"]),
         "action_schema_version": 2,
         "action_size": int(config["model"]["expected_action_size"]),
-        "joint_names": ["joint1", "joint2", "joint3", "joint4"],
+        "joint_names": list(ARM_JOINT_NAMES),
         "control_mode": "reference_plus_residual",
         "control_period_s": float(
             mujoco_model.opt.timestep * environment_config["frame_skip"]
@@ -112,7 +130,10 @@ def _write_metadata(
             environment_config["residual_action_scale"]
         ),
         "stay_joint_positions": [
-            float(value) for value in mujoco_model.key_qpos[stay_key_id, :4]
+            float(value)
+            for value in mujoco_model.key_qpos[
+                stay_key_id, arm_qpos_addresses
+            ]
         ],
         "model_sha256": _sha256(model_path),
         "config_sha256": _sha256(config_path),

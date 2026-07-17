@@ -1,6 +1,6 @@
 model:
   file: scene.xml
-  sha256: 2443c015eae20d4b8a5a09ce8e8bd48c0a355f4f7e1aebc7f663b6bc4fd5a9ad
+  sha256: a62fb4c219f80d0a2020e8e741f5cbb0c5d77942e072200e1bf84bd3373c09af
   source: /home/ktj/omx_turtle_ws/src/omx_rl_control/models/mjcf/omx_turtlebot_smooth.xml
   synchronized_at: "2026-07-16"
   contract:

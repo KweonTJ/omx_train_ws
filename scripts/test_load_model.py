@@ -45,6 +45,13 @@ place_site_id = name_id(
     model, mujoco.mjtObj.mjOBJ_SITE, "handoff_place_site"
 )
 stay_key_id = name_id(model, mujoco.mjtObj.mjOBJ_KEY, "stay")
+arm_joint_ids = [
+    name_id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    for name in ("joint1", "joint2", "joint3", "joint4")
+]
+arm_qpos_addresses = np.asarray(
+    [model.jnt_qposadr[joint_id] for joint_id in arm_joint_ids]
+)
 
 tower_size = 2.0 * model.geom_size[tower_id]
 object_size = 2.0 * model.geom_size[object_id]
@@ -59,6 +66,10 @@ np.testing.assert_allclose(model.site_pos[place_site_id], object_center)
 
 mujoco.mj_resetDataKeyframe(model, data, stay_key_id)
 mujoco.mj_forward(model, data)
+np.testing.assert_allclose(
+    data.qpos[arm_qpos_addresses],
+    [0.104311, 0.027612, -0.001534, -1.638291],
+)
 for _ in range(1000):
     mujoco.mj_step(model, data)
 

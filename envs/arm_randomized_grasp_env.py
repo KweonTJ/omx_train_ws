@@ -88,7 +88,7 @@ class ArmRandomizedGraspEnv(gym.Env):
             (0.0, 0.5, 0.2, -0.7),
         ),
         approach_waypoint_tolerance: float = 0.08,
-        pregrasp_height_offset: float = 0.025,
+        pregrasp_height_offset: float = 0.0225,
         gripper_open: float = 0.019,
         gripper_close: float = -0.010,
         gripper_open_tolerance: float = 0.003,
@@ -678,8 +678,7 @@ class ArmRandomizedGraspEnv(gym.Env):
         ].copy()
 
     def _initialize_grasped_start(self, object_position: np.ndarray) -> None:
-        arm_qpos = self.grasped_start_joint_positions.copy()
-        arm_qpos[0] = self._bearing(object_position)
+        arm_qpos = self._solve_reference_pregrasp(object_position)
         arm_qpos += self.np_random.uniform(
             -self.initial_joint_noise, self.initial_joint_noise
         )
