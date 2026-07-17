@@ -1,13 +1,37 @@
+# Python virtual environment
 .venv/
-__pycache__/
-*.pyc
+
+# Python cache
+**/__pycache__/
+*.py[cod]
+
+# Test and tool cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE and OS files
+.vscode/
+.DS_Store
+
+# Training logs
 logs/
+**/events.out.tfevents.*
+
+# Temporary model directory
 models/
+
+# Intermediate training results
 policies/latest/
+
+# Large intermediate model formats
 *.pt
 *.pth
-*.onnx
 *.npz
 *.pkl
-.DS_Store
-.vscode
+
+# Keep final exported models
+!policies/exported/
+!policies/exported/**
+!ros_export/
+!ros_export/**
