@@ -1,0 +1,65 @@
+experiment:
+  name: arm_only_delivery_ppo
+  seed: 42
+
+model:
+  path: assets/mjcf/turtlebot3_manipulator/scene.xml
+  expected_nq: 8
+  expected_nv: 8
+  expected_nu: 5
+  arm_actuators:
+    - joint1_position
+    - joint2_position
+    - joint3_position
+    - joint4_position
+  gripper_actuator: gripper_position
+  stay_keyframe: stay
+
+task:
+  phases:
+    - PICK_REACH
+    - PICK_TO_STAY
+    - PLACE_REACH
+    - PLACE_TO_STAY
+  navigation_in_policy: false
+  vision_input: object_pose
+  object_body: grasp_object_body
+  object_geom: grasp_object
+  object_site: grasp_object_site
+  reach_target_body: reach_target_body
+  place_target_site: handoff_place_site
+
+scene:
+  tower:
+    geom: task_tower
+    size: [0.13, 0.13, 0.17]
+    position: [0.27, 0.0, 0.085]
+  object:
+    size: [0.06, 0.055, 0.055]
+    initial_position: [0.27, 0.0, 0.1975]
+  place_target: [0.27, 0.0, 0.1975]
+
+control:
+  policy_action_joints: [joint1, joint2, joint3, joint4]
+  policy_action_size: 4
+  action_scale: [0.014, 0.014, 0.014, 0.014]
+  action_filter_coefficient: 0.18
+  gripper_control: deterministic_state_machine
+  physics_timestep: 0.002
+  environment_timestep: 0.02
+  frame_skip: 10
+
+gripper:
+  open: 0.019
+  close: -0.010
+  hold_after_grasp: true
+
+observation:
+  schema_version: 1
+  size: 33
+
+episode:
+  pickup:
+    sequence: [PICK_REACH, GRIPPER_CLOSE, PICK_TO_STAY]
+  delivery:
+    sequence: [PLACE_REACH, GRIPPER_OPEN, PLACE_TO_STAY]

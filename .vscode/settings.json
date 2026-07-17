@@ -1,0 +1,43 @@
+{
+    "ROS2.distro": "humble",
+    "python.autoComplete.extraPaths": [
+        "/home/ktj/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/install/turtlebot3_example/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/build/turtlebot3_control",
+        "/home/ktj/turtlebot3_ws/install/turtlebot3_control/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/build/aruco_mp_bridge",
+        "/home/ktj/turtlebot3_ws/install/aruco_mp_bridge/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/install/turtlebot3_msgs/local/lib/python3.10/dist-packages",
+        "/home/ktj/turtlebot3_ws/build/leader_line_follower",
+        "/home/ktj/turtlebot3_ws/install/leader_line_follower/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages",
+        "/home/ktj/turtlebot3_ws/install/dynamixel_sdk/local/lib/python3.10/dist-packages",
+        "/home/ktj/turtlebot3_ws/install/astra_camera_msgs/local/lib/python3.10/dist-packages",
+        "/home/ktj/turtlebot3_ws/build/aruco_eef_tracker",
+        "/home/ktj/turtlebot3_ws/install/aruco_eef_tracker/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages",
+        "/home/ktj/Downloads/CARLA_0.9.16/PythonAPI/carla/dist/carla-0.9.16-py3.7-linux-x86_64.egg",
+        "/home/ktj/Downloads/CARLA_0.9.16/PythonAPI/carla"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/ktj/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/install/turtlebot3_example/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/build/turtlebot3_control",
+        "/home/ktj/turtlebot3_ws/install/turtlebot3_control/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/build/aruco_mp_bridge",
+        "/home/ktj/turtlebot3_ws/install/aruco_mp_bridge/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/install/turtlebot3_msgs/local/lib/python3.10/dist-packages",
+        "/home/ktj/turtlebot3_ws/build/leader_line_follower",
+        "/home/ktj/turtlebot3_ws/install/leader_line_follower/lib/python3.10/site-packages",
+        "/home/ktj/turtlebot3_ws/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages",
+        "/home/ktj/turtlebot3_ws/install/dynamixel_sdk/local/lib/python3.10/dist-packages",
+        "/home/ktj/turtlebot3_ws/install/astra_camera_msgs/local/lib/python3.10/dist-packages",
+        "/home/ktj/turtlebot3_ws/build/aruco_eef_tracker",
+        "/home/ktj/turtlebot3_ws/install/aruco_eef_tracker/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages",
+        "/home/ktj/Downloads/CARLA_0.9.16/PythonAPI/carla/dist/carla-0.9.16-py3.7-linux-x86_64.egg",
+        "/home/ktj/Downloads/CARLA_0.9.16/PythonAPI/carla"
+    ]
+}

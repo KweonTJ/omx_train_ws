@@ -1,19 +1,17 @@
 robot:
-  name: turtlebot3_openmanipulator
-  base_type: differential_drive
+  name: turtlebot3_openmanipulator_x
   arm_dof: 4
   gripper_dof: 1
 
-base_limits:
-  max_linear_velocity: 0.22
-  max_angular_velocity: 2.84
-
 arm_joint_limits:
-  joint1: [-3.14, 3.14]
-  joint2: [-1.5, 1.5]
-  joint3: [-2.7, 1.38]
-  joint4: [-1.79, 2.04]
+  joint1: [-2.82743, 2.82743]
+  joint2: [-1.79071, 1.57080]
+  joint3: [-0.942478, 1.38230]
+  joint4: [-1.79071, 2.04204]
 
 gripper:
   open: 0.019
   close: -0.010
+
+stay_pose:
+  arm: [0.0, 0.0, 1.38, -1.38]

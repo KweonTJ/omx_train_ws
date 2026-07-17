@@ -10,3 +10,4 @@ policies/latest/
 *.npz
 *.pkl
 .DS_Store
+.vscode

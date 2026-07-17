@@ -1,16 +1,25 @@
 task:
-  name: pick_place
-  object_size: [0.06, 0.06, 0.06]
-  object_mass: 0.05
-  table_height: 0.35
+  name: arm_only_delivery
+  phases: [PICK_REACH, PICK_TO_STAY, PLACE_REACH, PLACE_TO_STAY]
+  navigation_in_policy: false
+
+scene:
+  tower_size: [0.13, 0.13, 0.17]
+  tower_position: [0.27, 0.0, 0.085]
+  object_size: [0.06, 0.055, 0.055]
+  object_initial_position: [0.27, 0.0, 0.1975]
+  place_target_position: [0.27, 0.0, 0.1975]
 
 observation:
-  use_base_pose: true
+  use_base_pose: false
   use_arm_joint_state: true
+  use_gripper_state: true
   use_object_pose: true
   use_target_pose: true
+  use_phase: true
 
 action:
-  control_base_velocity: true
+  control_base_velocity: false
   control_arm_joint_delta: true
-  control_gripper: true
+  control_gripper: false
+  deterministic_gripper: true
