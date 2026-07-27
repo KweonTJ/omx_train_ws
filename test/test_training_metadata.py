@@ -21,6 +21,13 @@ def test_metadata_exports_named_arm_stay_positions(tmp_path):
         "joint3",
         "joint4",
     ]
+    assert metadata["action_schema_version"] == 3
+    assert metadata["control_mode"] == (
+        "reference_plus_residual_with_joint4_pitch_coupling"
+    )
+    assert metadata["gripper_pitch_hold_enabled"]
+    assert metadata["gripper_pitch_target"] == 0.0
+    assert metadata["gripper_pitch_joint4_max_step"] == 0.028
     np.testing.assert_allclose(
         metadata["stay_joint_positions"],
         [0.104311, 0.027612, -0.001534, -1.638291],

@@ -31,6 +31,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--policy", type=Path, default=DEFAULT_POLICY)
     parser.add_argument("--stage", default="sim2real_robust")
     parser.add_argument("--seed", type=int, default=20260717)
+    parser.add_argument(
+        "--episode-seed",
+        action="append",
+        type=int,
+        help=(
+            "Replay this exact environment seed. Repeat the option to cycle "
+            "through multiple fixed object positions."
+        ),
+    )
     parser.add_argument("--pause", type=float, default=1.0)
     return parser.parse_args()
 
@@ -60,23 +69,39 @@ def main() -> None:
         episode = 0
         while viewer.is_running():
             episode += 1
-            episode_seed = int(rng.integers(0, 2**31 - 1))
+            if args.episode_seed:
+                episode_seed = args.episode_seed[
+                    (episode - 1) % len(args.episode_seed)
+                ]
+            else:
+                episode_seed = int(rng.integers(0, 2**31 - 1))
             observation, info = env.reset(seed=episode_seed)
             viewer.sync()
+            target_joint1_deg = np.degrees(
+                env._bearing(info["object_initial_position"])
+            )
             print(
                 f"episode={episode} seed={episode_seed} "
                 f"task={info['episode_task']} "
                 f"bucket={info['object_sample_bucket']} "
-                f"position={np.round(info['object_initial_position'], 4)}"
+                f"position={np.round(info['object_initial_position'], 4)} "
+                f"target_joint1={target_joint1_deg:+.2f}deg"
             )
 
             final_info = info
+            last_reach_joint1_deg = np.degrees(
+                env.data.qpos[env._arm_qpos_addr][0]
+            )
             for _ in range(env.max_episode_steps):
                 if not viewer.is_running():
                     break
                 started = time.perf_counter()
                 action, _ = model.predict(observation, deterministic=True)
                 observation, _, terminated, truncated, final_info = env.step(action)
+                if final_info["phase_name"] in ("PICK_REACH", "PLACE_REACH"):
+                    last_reach_joint1_deg = np.degrees(
+                        env.data.qpos[env._arm_qpos_addr][0]
+                    )
                 viewer.sync()
                 remaining = control_period - (time.perf_counter() - started)
                 if remaining > 0.0:
@@ -89,7 +114,8 @@ def main() -> None:
                 f"grasped={final_info['is_grasped']} "
                 f"released={final_info.get('released', False)} "
                 f"collision={final_info.get('collision_failure', False)} "
-                f"steps={final_info['elapsed_steps']}"
+                f"steps={final_info['elapsed_steps']} "
+                f"last_reach_joint1={last_reach_joint1_deg:+.2f}deg"
             )
             pause_until = time.perf_counter() + args.pause
             while viewer.is_running() and time.perf_counter() < pause_until:

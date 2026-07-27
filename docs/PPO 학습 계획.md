@@ -123,8 +123,8 @@ TurtleBot3가 픽업 위치 또는 배송 위치로 이동하는 동안 정책�
 action.shape = (4,)
 action range = [-1, 1]
 action order = [joint1, joint2, joint3, joint4]
-action semantics = residual correction
-action schema version = 2
+action semantics = residual correction + approach pitch coupling
+action schema version = 3
 ```
 
 정책 출력 처리 순서는 학습과 런타임에서 동일해야 한다.
@@ -151,9 +151,17 @@ joint_target_t = clip(
     joint_lower_limit,
     joint_upper_limit
 )
+
+if phase_t in [PICK_REACH, PLACE_REACH]:
+    desired_joint4_t = target_pitch - joint2_target_t - joint3_target_t
+    joint4_target_t = clip_step(
+        joint4_target_(t-1),
+        desired_joint4_t,
+        0.028
+    )
 ```
 
-그리퍼 actuator가 MuJoCo 모델에 존재하더라도 PPO action에는 포함하지 않는다. 환경 상태 머신이 `data.ctrl[4]`를 직접 설정한다.
+OpenMANIPULATOR-X의 4자유도에서 `joint2 + joint3 + joint4`는 EEF pitch에 대응한다. 따라서 물체 접근 중 `joint4`가 `joint2`, `joint3` 변화를 상쇄하게 하여 그리퍼와 EEF 카메라의 pitch를 유지한다. 그리퍼 actuator가 MuJoCo 모델에 존재하더라도 PPO action에는 포함하지 않고, 환경 상태 머신이 `data.ctrl[4]`를 직접 설정한다.
 
 기준 경로는 Stay에서 차체 위 안전점, 전방 안전점, ArUco pre-grasp IK 순서로 진행한다. PPO를 제거하고 0 잔차를 넣어도 기본 임무를 수행할 수 있어야 하며, PPO는 비정형 위치·관측 오차·동역학 편차를 보정한다.
 
@@ -351,9 +359,12 @@ policies/exported/<policy_version>/
 |---|---|
 | `policy_version` | 사람이 읽을 수 있는 불변 버전 |
 | `observation_schema_version` | 33차원 필드 순서 버전 |
-| `action_schema_version` | 4차원 관절 순서 버전 |
-| `control_mode` | `reference_plus_residual` |
+| `action_schema_version` | `3` |
+| `control_mode` | `reference_plus_residual_with_joint4_pitch_coupling` |
 | `residual_action_scale` | `0.10` |
+| `gripper_pitch_hold_enabled` | `true` |
+| `gripper_pitch_target` | `0.0 rad` |
+| `gripper_pitch_joint4_max_step` | `0.028 rad/step` |
 | `joint_names` | `[joint1, joint2, joint3, joint4]` |
 | `control_period_s` | `0.02` |
 | `action_scale` | `[0.014, 0.014, 0.014, 0.014]` |

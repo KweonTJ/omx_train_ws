@@ -85,6 +85,38 @@ def test_zero_residual_reference_controller_completes_irregular_grasps():
     env.close()
 
 
+def test_joint4_coupling_holds_gripper_pitch_during_object_approach():
+    config = load_config("configs/arm_grasp_randomized_ppo.yaml")
+    env = make_grasp_env(config, stage_name="full_tower")
+    rng = np.random.default_rng(42)
+    pitch_errors = []
+    target_pitch_errors = []
+
+    for seed in (0, 3, 7, 12, 19):
+        _, info = env.reset(seed=seed, options={"task": "pick"})
+        for _ in range(env.max_episode_steps):
+            action = rng.uniform(-1.0, 1.0, size=4).astype(np.float32)
+            _, _, terminated, truncated, info = env.step(action)
+            if (
+                info["phase_name"] == "PICK_REACH"
+                and info["approach_stage"] >= 1
+            ):
+                pitch_errors.append(abs(info["gripper_pitch_error"]))
+                target_pitch_errors.append(
+                    abs(env._gripper_pitch_error(env._arm_target))
+                )
+            if terminated or truncated:
+                break
+
+        assert info["is_success"], (seed, info)
+        assert not info["collision_failure"], (seed, info)
+
+    assert pitch_errors
+    assert max(pitch_errors) <= env.close_roll_tolerance
+    assert max(target_pitch_errors) <= env.close_roll_tolerance
+    env.close()
+
+
 def test_zero_residual_reference_controller_places_and_returns_to_stay():
     config = load_config("configs/arm_grasp_randomized_ppo.yaml")
     env = make_grasp_env(config, stage_name="place_full_tower")

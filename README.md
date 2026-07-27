@@ -29,20 +29,21 @@ flowchart LR
 | 상자·배치 목표 중심 | `[0.27, 0.0, 0.1975] m` |
 | MuJoCo 계약 | `nq/nv/nu = 8/8/5` |
 | Stay 팔 자세 | `[0.104311, 0.027612, -0.001534, -1.638291] rad` |
-| 정책 action | 4차원 `joint1`~`joint4` 잔차 보정, 기준 명령의 `10%` |
+| 정책 action | 4차원 잔차 보정 + 접근 중 `joint4` pitch coupling |
 | 관측 계약 | 33차원, phase 포함 |
 | PPO 장치 | CUDA GPU (`cuda`) |
 
 ## 제어 구조
 
-현재 정책은 관절 목표 전체를 PPO에 맡기지 않는다. ArUco 위치로 계산한 충돌 회피 관절 경로가 기준 명령을 만들고, PPO는 각 축에 `[-0.1, 0.1]` 범위의 보정만 더한다. 파지 gate가 처음 성립하면 기준 자세를 고정해 연속 검출을 기다리고, 그리퍼 close와 파지 후 Stay 복귀는 같은 상태 머신 계약을 사용한다.
+현재 학습 코드는 관절 목표 전체를 PPO에 맡기지 않는다. ArUco 위치로 계산한 충돌 회피 관절 경로가 기준 명령을 만들고, PPO는 각 축에 `[-0.1, 0.1]` 범위의 보정만 더한다. 물체 접근 중에는 C++ joint-nudge 제어와 같이 `joint4 = target_pitch - joint2 - joint3` 관계를 제한된 step으로 추종해 그리퍼와 EEF 카메라의 pitch를 유지한다. 파지 gate가 처음 성립하면 기준 자세를 고정해 연속 검출을 기다리고, 그리퍼 close와 파지 후 Stay 복귀는 같은 상태 머신 계약을 사용한다.
 
 ```text
 control_action = clip(reference_action + 0.10 * ppo_action, -1, 1)
 joint_target += low_pass(control_action, 0.18) * 0.014 rad
+joint4_target -> clip_step(-(joint2_target + joint3_target), 0.028 rad)
 ```
 
-이 정책의 action schema는 `v2`다. 실제 로봇에서도 기준 경로, 필터, 스케일을 재현하지 않으면 정책만 단독으로 실행할 수 없다.
+새 학습 코드의 action schema는 `v3`다. 체크인된 기존 정책 파일은 아직 schema `v2`이므로 pitch coupling을 포함해 새로 학습해야 한다. 실제 로봇에서도 기준 경로, 필터, 스케일과 joint4 coupling을 재현하지 않으면 새 정책만 단독으로 실행할 수 없다.
 
 ## 비정형 물체 위치
 

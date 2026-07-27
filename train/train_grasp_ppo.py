@@ -113,10 +113,10 @@ def _write_metadata(
         "total_timesteps": int(total_timesteps),
         "observation_schema_version": 1,
         "observation_size": int(config["model"]["expected_observation_size"]),
-        "action_schema_version": 2,
+        "action_schema_version": 3,
         "action_size": int(config["model"]["expected_action_size"]),
         "joint_names": list(ARM_JOINT_NAMES),
-        "control_mode": "reference_plus_residual",
+        "control_mode": "reference_plus_residual_with_joint4_pitch_coupling",
         "control_period_s": float(
             mujoco_model.opt.timestep * environment_config["frame_skip"]
         ),
@@ -128,6 +128,15 @@ def _write_metadata(
         ),
         "residual_action_scale": float(
             environment_config["residual_action_scale"]
+        ),
+        "gripper_pitch_hold_enabled": bool(
+            environment_config["gripper_pitch_hold_enabled"]
+        ),
+        "gripper_pitch_target": float(
+            environment_config["gripper_pitch_target"]
+        ),
+        "gripper_pitch_joint4_max_step": float(
+            environment_config["gripper_pitch_joint4_max_step"]
         ),
         "stay_joint_positions": [
             float(value)

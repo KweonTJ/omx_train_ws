@@ -34,7 +34,8 @@ def solve_pregrasp_joints(env, target: np.ndarray) -> np.ndarray:
         position_error = 10.0 * (
             scratch.site_xpos[env._eef_site_id] - target
         )
-        return np.concatenate((position_error, [np.sum(joints_2_to_4)]))
+        pitch_error = np.sum(joints_2_to_4) - env.gripper_pitch_target
+        return np.concatenate((position_error, [pitch_error]))
 
     solution = least_squares(
         residual,

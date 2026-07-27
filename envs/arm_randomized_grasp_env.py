@@ -88,6 +88,9 @@ class ArmRandomizedGraspEnv(gym.Env):
             (0.0, 0.5, 0.2, -0.7),
         ),
         approach_waypoint_tolerance: float = 0.08,
+        gripper_pitch_hold_enabled: bool = True,
+        gripper_pitch_target: float = 0.0,
+        gripper_pitch_joint4_max_step: float = 0.028,
         pregrasp_height_offset: float = 0.0225,
         gripper_open: float = 0.019,
         gripper_close: float = -0.010,
@@ -96,7 +99,7 @@ class ArmRandomizedGraspEnv(gym.Env):
         close_xy_distance: float = 0.035,
         close_z_tolerance: float = 0.030,
         close_bearing_tolerance: float = 0.35,
-        close_roll_tolerance: float = 0.35,
+        close_roll_tolerance: float = 0.08,
         close_stable_steps: int = 4,
         close_settle_steps: int = 12,
         max_closing_steps: int = 60,
@@ -168,6 +171,11 @@ class ArmRandomizedGraspEnv(gym.Env):
             approach_joint_waypoints, dtype=np.float64
         )
         self.approach_waypoint_tolerance = float(approach_waypoint_tolerance)
+        self.gripper_pitch_hold_enabled = bool(gripper_pitch_hold_enabled)
+        self.gripper_pitch_target = float(gripper_pitch_target)
+        self.gripper_pitch_joint4_max_step = float(
+            gripper_pitch_joint4_max_step
+        )
         self.pregrasp_height_offset = float(pregrasp_height_offset)
 
         self.gripper_open = float(gripper_open)
@@ -219,7 +227,7 @@ class ArmRandomizedGraspEnv(gym.Env):
             "reach_progress": 120.0,
             "reach_distance": 2.0,
             "bearing_error": 0.20,
-            "roll_error": 0.50,
+            "roll_error": 5.0,
             "approach_joint_progress": 12.0,
             "approach_joint_error": 0.50,
             "approach_waypoint_bonus": 5.0,
@@ -361,6 +369,13 @@ class ArmRandomizedGraspEnv(gym.Env):
             raise ValueError("approach_joint_waypoints must have shape (N, 4)")
         if self.approach_waypoint_tolerance <= 0.0:
             raise ValueError("approach_waypoint_tolerance must be positive")
+        if not np.isfinite(self.gripper_pitch_target):
+            raise ValueError("gripper_pitch_target must be finite")
+        if (
+            not np.isfinite(self.gripper_pitch_joint4_max_step)
+            or self.gripper_pitch_joint4_max_step <= 0.0
+        ):
+            raise ValueError("gripper_pitch_joint4_max_step must be positive")
         if np.any(self.workspace_max <= self.workspace_min):
             raise ValueError("workspace_max must be greater than workspace_min")
         if (
@@ -740,11 +755,13 @@ class ArmRandomizedGraspEnv(gym.Env):
         action_jerk = action_delta - self._previous_filtered_delta
 
         if not self._closing and not self._releasing:
+            previous_joint4_target = float(self._arm_target[3])
             self._arm_target = np.clip(
                 self._arm_target + self._filtered_action * self.action_scale,
                 self._ctrl_low,
                 self._ctrl_high,
             )
+            self._apply_gripper_pitch_hold(previous_joint4_target)
 
         self._update_gripper_state()
         self.data.ctrl[:4] = self._arm_target
@@ -1014,7 +1031,7 @@ class ArmRandomizedGraspEnv(gym.Env):
         delta = self._pregrasp_target(target_position) - eef_position
         target_bearing = self._bearing(target_position)
         arm_qpos = self.data.qpos[self._arm_qpos_addr]
-        roll_error = abs(_wrap_to_pi(float(np.sum(arm_qpos[1:4]))))
+        roll_error = abs(self._gripper_pitch_error(arm_qpos))
         return bool(
             np.linalg.norm(delta) <= self.close_distance
             and np.linalg.norm(delta[:2]) <= self.close_xy_distance
@@ -1070,7 +1087,7 @@ class ArmRandomizedGraspEnv(gym.Env):
         target_bearing = self._bearing(object_position)
         arm_qpos = self.data.qpos[self._arm_qpos_addr]
         joint1 = float(arm_qpos[0])
-        roll_error = abs(_wrap_to_pi(float(np.sum(arm_qpos[1:4]))))
+        roll_error = abs(self._gripper_pitch_error(arm_qpos))
         return bool(
             np.linalg.norm(delta) <= (self.close_distance if distance is None else distance)
             and np.linalg.norm(delta[:2])
@@ -1112,11 +1129,60 @@ class ArmRandomizedGraspEnv(gym.Env):
             [0.0, 0.0, height_offset]
         )
 
+    def _gripper_pitch_error(self, arm_joints: np.ndarray) -> float:
+        return _wrap_to_pi(
+            float(np.sum(np.asarray(arm_joints, dtype=np.float64)[1:4]))
+            - self.gripper_pitch_target
+        )
+
+    def _apply_gripper_pitch_hold(self, previous_joint4_target: float) -> None:
+        """Couple joint4 to joint2/joint3 while the camera faces the object."""
+        if (
+            not self.gripper_pitch_hold_enabled
+            or self._phase not in (self.PICK_REACH, self.PLACE_REACH)
+        ):
+            return
+
+        desired_joint4 = (
+            self.gripper_pitch_target
+            - self._arm_target[1]
+            - self._arm_target[2]
+        )
+        desired_joint4 = float(
+            np.clip(desired_joint4, self._ctrl_low[3], self._ctrl_high[3])
+        )
+        joint4_step = float(
+            np.clip(
+                desired_joint4 - previous_joint4_target,
+                -self.gripper_pitch_joint4_max_step,
+                self.gripper_pitch_joint4_max_step,
+            )
+        )
+        self._arm_target[3] = np.clip(
+            previous_joint4_target + joint4_step,
+            self._ctrl_low[3],
+            self._ctrl_high[3],
+        )
+
     def _configure_approach_waypoints(self, object_position: np.ndarray) -> None:
         bearing = self._bearing(object_position)
         joint_waypoints = self.approach_joint_waypoints.copy()
         if len(joint_waypoints):
             joint_waypoints[:, 0] = bearing
+            if self.gripper_pitch_hold_enabled:
+                coupled_joint4 = (
+                    self.gripper_pitch_target
+                    - joint_waypoints[:, 1]
+                    - joint_waypoints[:, 2]
+                )
+                if np.any(
+                    (coupled_joint4 < self._ctrl_low[3])
+                    | (coupled_joint4 > self._ctrl_high[3])
+                ):
+                    raise ValueError(
+                        "Approach pitch target requires joint4 outside its limits"
+                    )
+                joint_waypoints[:, 3] = coupled_joint4
         self._episode_approach_joint_waypoints = joint_waypoints
 
         scratch = mujoco.MjData(self.model)
@@ -1145,7 +1211,10 @@ class ArmRandomizedGraspEnv(gym.Env):
             position_error = 10.0 * (
                 scratch.site_xpos[self._eef_site_id] - target
             )
-            return np.concatenate((position_error, [np.sum(joints_2_to_4)]))
+            pitch_error = (
+                np.sum(joints_2_to_4) - self.gripper_pitch_target
+            )
+            return np.concatenate((position_error, [pitch_error]))
 
         solution = least_squares(
             residual,
@@ -1219,7 +1288,7 @@ class ArmRandomizedGraspEnv(gym.Env):
         arm_qpos = self.data.qpos[self._arm_qpos_addr]
         target_bearing = self._bearing(active_reach_target)
         bearing_error = _wrap_to_pi(float(arm_qpos[0]) - target_bearing)
-        roll_error = _wrap_to_pi(float(np.sum(arm_qpos[1:4])))
+        roll_error = self._gripper_pitch_error(arm_qpos)
         stay_error = float(np.linalg.norm(arm_qpos - self._stay_joint_positions))
         collision = self._collision_metrics()
         placement_error = float(
@@ -1261,6 +1330,9 @@ class ArmRandomizedGraspEnv(gym.Env):
             "started_grasped": self._started_grasped,
             "started_released": self._started_released,
             "reference_control_enabled": self.reference_control_enabled,
+            "gripper_pitch_hold_enabled": self.gripper_pitch_hold_enabled,
+            "gripper_pitch_target": self.gripper_pitch_target,
+            "gripper_pitch_error": roll_error,
             "approach_stage": self._approach_stage,
             "approach_stage_count": len(self._episode_approach_eef_targets),
             "approach_joint_error": approach_joint_error,
@@ -1330,7 +1402,7 @@ class ArmRandomizedGraspEnv(gym.Env):
         ) - 1.0
         relative_normalized = 2.0 * relative / position_span
         target_bearing = self._bearing(active_target)
-        roll_error = _wrap_to_pi(float(np.sum(arm_qpos[1:4]))) / np.pi
+        roll_error = self._gripper_pitch_error(arm_qpos) / np.pi
 
         phase_one_hot = np.zeros(4, dtype=np.float64)
         phase_one_hot[self._phase] = 1.0

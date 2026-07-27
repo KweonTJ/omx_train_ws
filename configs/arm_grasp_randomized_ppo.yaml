@@ -42,6 +42,11 @@ environment:
     - [0.0, -0.5, 0.5, 0.0]
     - [0.0, 0.5, 0.2, -0.7]
   approach_waypoint_tolerance: 0.08
+  # C++ joint-nudge equivalent: joint4 cancels joint2+joint3 motion so the
+  # gripper and EEF camera keep a ground-parallel pitch during object approach.
+  gripper_pitch_hold_enabled: true
+  gripper_pitch_target: 0.0
+  gripper_pitch_joint4_max_step: 0.028
 
   # EEF site stays above the box center so the fingers do not hit the tower.
   pregrasp_height_offset: 0.0225
@@ -52,7 +57,8 @@ environment:
   close_xy_distance: 0.035
   close_z_tolerance: 0.030
   close_bearing_tolerance: 0.35
-  close_roll_tolerance: 0.35
+  # The legacy name is kept for observation compatibility; this is EEF pitch.
+  close_roll_tolerance: 0.08
   close_stable_steps: 4
   close_settle_steps: 12
   max_closing_steps: 60
@@ -85,7 +91,7 @@ environment:
     reach_progress: 120.0
     reach_distance: 2.0
     bearing_error: 0.20
-    roll_error: 0.50
+    roll_error: 5.0
     approach_joint_progress: 12.0
     approach_joint_error: 0.50
     approach_waypoint_bonus: 5.0
