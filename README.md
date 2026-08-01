@@ -80,6 +80,14 @@ ros_export/   ROS 2 추론 패키지용 export
 scripts/      모델·정책 계약 검사
 ```
 
+### 문서 읽는 순서
+
+1. [`01. 팔 전용 PPO 학습 설계.md`](docs/01.%20팔%20전용%20PPO%20학습%20설계.md) — 환경·관측·행동·보상·배포 계약
+2. [`02. 비정형 파지 PPO 1차 학습 결과.md`](docs/02.%20비정형%20파지%20PPO%201차%20학습%20결과.md) — 전체 타워 파지와 ArUco 강건화 1차 결과
+3. [`03. 팔 배송 PPO 학습 및 안정화 기록.md`](docs/03.%20팔%20배송%20PPO%20학습%20및%20안정화%20기록.md) — Pick/Place curriculum과 단계별 최고 모델 선택
+4. [`04. 팔 배송 PPO v2 최종 평가.md`](docs/04.%20팔%20배송%20PPO%20v2%20최종%20평가.md) — 배송 v2 모델의 독립 평가와 한계
+5. [`05. 실제 Stay 기준 PPO v3 재학습 기록.md`](docs/05.%20실제%20Stay%20기준%20PPO%20v3%20재학습%20기록.md) — 실제 로봇 Stay 자세를 적용한 재학습 결과
+
 ## 검증과 학습
 
 ```bash
@@ -127,4 +135,4 @@ uv run --frozen python scripts/view_grasp_policy.py
 | 타워 높이·상자 크기 변동 | `88%` | `87.8%` | `88.2%` | `12%` |
 | 전체 Sim2Real randomization | `95%` | `95.9%` | `94.1%` | `5%` |
 
-선택된 체크포인트의 SB3 누적 counter는 `660,000` step이다. 기준 정책은 `policies/latest/arm_delivery_residual_v3_robot_stay/arm_grasp_latest.zip`이며 SHA-256은 `07b69c0680521413ca8c40bf37c93993d74d47ccedc48f0c2ab7cb0a7991d6fe`다. 새 정책은 실기 bringup과 같은 Stay 자세로 처음부터 재학습했다. 높이 변동 단독 평가는 동일 seed의 v2 `91%`보다 낮은 `88%`이므로 양의 X 끝단을 실기 안전 제한 구간으로 유지한다. 상세 변경과 평가 근거는 `docs/PPO 재학습 기록 2026-07-18.md`에서 확인한다.
+선택된 체크포인트의 SB3 누적 counter는 `660,000` step이다. 기준 정책은 `policies/latest/arm_delivery_residual_v3_robot_stay/arm_grasp_latest.zip`이며 SHA-256은 `07b69c0680521413ca8c40bf37c93993d74d47ccedc48f0c2ab7cb0a7991d6fe`다. 새 정책은 실기 bringup과 같은 Stay 자세로 처음부터 재학습했다. 높이 변동 단독 평가는 동일 seed의 v2 `91%`보다 낮은 `88%`이므로 양의 X 끝단을 실기 안전 제한 구간으로 유지한다. 상세 변경과 평가 근거는 `docs/05. 실제 Stay 기준 PPO v3 재학습 기록.md`에서 확인한다.
