@@ -141,3 +141,5 @@ uv run --frozen python scripts/view_grasp_policy.py
 | 연속 배송 Sim2Real | `98%` | `99%` | `99%` | `2%` |
 
 선택된 체크포인트의 SB3 누적 counter는 `627,232`이며 정책 SHA-256은 `ce5403ddffaf69181801400959824700346d28b64bb559bab93fcdbe16f9aafb`다. 배포 artifact는 `policies/exported/arm_delivery_pitch_hold_v4/`와 `ros_export/arm_delivery_pitch_hold_v4/`에 동일하게 보관한다. 일반 연속 배송은 100회 모두 성공했지만 Sim2Real 충돌 2건이 남아 있으므로 실제 로봇에서는 중앙·저속 검증부터 진행해야 한다. 상세 근거는 `docs/07. 연속 배송 pitch-hold PPO v4 재학습 결과.md`에 정리했다.
+
+## MuJoCo 뷰어 영상
