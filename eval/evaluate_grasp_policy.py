@@ -29,6 +29,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stage", default="full_tower")
     parser.add_argument("--episodes", type=int, default=100)
     parser.add_argument("--seed", type=int, default=10042)
+    parser.add_argument(
+        "--device",
+        default="cpu",
+        choices=("cpu", "cuda", "auto"),
+        help="Stable-Baselines3 inference device.",
+    )
     parser.add_argument("--output", type=Path)
     return parser.parse_args()
 
@@ -39,7 +45,7 @@ def main() -> None:
         raise ValueError("episodes must be positive")
     config = load_config(args.config)
     env = make_grasp_env(config, stage_name=args.stage)
-    model = PPO.load(args.policy.expanduser().resolve(), device="cpu")
+    model = PPO.load(args.policy.expanduser().resolve(), device=args.device)
     rng = np.random.default_rng(args.seed)
 
     buckets: dict[str, dict[str, float]] = defaultdict(
@@ -52,7 +58,12 @@ def main() -> None:
             "collisions": 0.0,
             "grasped_final": 0.0,
             "released_final": 0.0,
+            "delivery_pick_completed": 0.0,
+            "delivery_place_started": 0.0,
         }
+    )
+    place_target_buckets: dict[str, dict[str, float]] = defaultdict(
+        lambda: {"episodes": 0.0, "successes": 0.0, "collisions": 0.0}
     )
     total_reward = 0.0
     episode_lengths: list[int] = []
@@ -84,6 +95,17 @@ def main() -> None:
         released_final = bool(final_info.get("released", False))
         tasks[task]["grasped_final"] += int(grasped_final)
         tasks[task]["released_final"] += int(released_final)
+        tasks[task]["delivery_pick_completed"] += int(
+            bool(final_info.get("delivery_pick_completed", False))
+        )
+        tasks[task]["delivery_place_started"] += int(
+            bool(final_info.get("delivery_place_started", False))
+        )
+        if task in ("place", "delivery"):
+            target_bucket = str(final_info["place_target_bucket"])
+            place_target_buckets[target_bucket]["episodes"] += 1
+            place_target_buckets[target_bucket]["successes"] += int(success)
+            place_target_buckets[target_bucket]["collisions"] += int(collision)
         grasped_count += int(grasped_final)
         released_count += int(released_final)
         total_reward += episode_reward
@@ -107,6 +129,21 @@ def main() -> None:
             "collision_rate": values["collisions"] / episodes,
             "grasped_final_rate": values["grasped_final"] / episodes,
             "released_final_rate": values["released_final"] / episodes,
+            "delivery_pick_completed_rate": (
+                values["delivery_pick_completed"] / episodes
+            ),
+            "delivery_place_started_rate": (
+                values["delivery_place_started"] / episodes
+            ),
+        }
+
+    place_target_report = {}
+    for bucket, values in sorted(place_target_buckets.items()):
+        episodes = int(values["episodes"])
+        place_target_report[bucket] = {
+            "episodes": episodes,
+            "success_rate": values["successes"] / episodes,
+            "collision_rate": values["collisions"] / episodes,
         }
 
     report = {
@@ -123,6 +160,7 @@ def main() -> None:
         "mean_episode_steps": float(np.mean(episode_lengths)),
         "task_breakdown": task_report,
         "position_buckets": bucket_report,
+        "place_target_buckets": place_target_report,
     }
     text = yaml.safe_dump(report, sort_keys=False)
     print(text)

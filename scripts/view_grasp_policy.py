@@ -21,7 +21,7 @@ from envs.factory import DEFAULT_CONFIG
 
 
 DEFAULT_POLICY = (
-    ROOT / "policies/latest/arm_delivery_residual_v2/arm_grasp_latest.zip"
+    ROOT / "policies/latest/arm_delivery_pitch_hold_v4/arm_grasp_latest.zip"
 )
 
 
@@ -29,7 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--policy", type=Path, default=DEFAULT_POLICY)
-    parser.add_argument("--stage", default="sim2real_robust")
+    parser.add_argument("--stage", default="delivery_full_tower")
     parser.add_argument("--seed", type=int, default=20260717)
     parser.add_argument(
         "--episode-seed",
@@ -113,6 +113,8 @@ def main() -> None:
                 f"episode={episode} success={final_info['is_success']} "
                 f"grasped={final_info['is_grasped']} "
                 f"released={final_info.get('released', False)} "
+                f"delivery_pick={final_info.get('delivery_pick_completed', False)} "
+                f"delivery_place={final_info.get('delivery_place_started', False)} "
                 f"collision={final_info.get('collision_failure', False)} "
                 f"steps={final_info['elapsed_steps']} "
                 f"last_reach_joint1={last_reach_joint1_deg:+.2f}deg"

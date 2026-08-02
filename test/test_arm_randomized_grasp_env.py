@@ -187,3 +187,33 @@ def test_mixed_and_domain_randomized_stages_cover_contracts():
     assert 0.85 <= domain["gain_scale"] <= 1.15
     assert 0.70 <= domain["friction_scale"] <= 1.30
     randomized.close()
+
+
+def test_zero_residual_reference_controller_completes_full_delivery():
+    config = load_config("configs/arm_grasp_randomized_ppo.yaml")
+    env = make_grasp_env(config, stage_name="delivery_full_tower")
+    zero_residual = np.zeros(4, dtype=np.float32)
+
+    for seed in (0, 3, 7, 12):
+        _, info = env.reset(seed=seed)
+        source_position = info["object_initial_position"].copy()
+        assert info["episode_task"] == "delivery"
+        assert not info["released"]
+        for _ in range(env.max_episode_steps):
+            _, _, terminated, truncated, info = env.step(zero_residual)
+            if terminated or truncated:
+                break
+
+        assert info["delivery_pick_completed"], (seed, info)
+        assert info["delivery_place_started"], (seed, info)
+        assert info["is_success"], (seed, info)
+        assert info["released"], (seed, info)
+        assert not info["is_grasped"], (seed, info)
+        assert info["placement_error"] <= env.placement_tolerance
+        assert (
+            np.linalg.norm(info["place_target_position"][:2] - source_position[:2])
+            >= env.delivery_target_min_xy_separation
+        )
+        assert not info["collision_failure"], (seed, info)
+
+    env.close()

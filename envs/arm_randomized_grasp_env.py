@@ -1,4 +1,4 @@
-"""Randomized object-pose grasp and return-to-stay task."""
+"""Randomized arm pick, transport-hold, place, and return-to-stay task."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ def _wrap_to_pi(angle: float) -> float:
 
 
 class ArmRandomizedGraspEnv(gym.Env):
-    """Train joint1-joint4 to grasp a randomized box and return to stay."""
+    """Train joint1-joint4 for pick, delivery handoff, and place."""
 
     metadata = {"render_modes": ["rgb_array"], "render_fps": 50}
 
@@ -76,7 +76,10 @@ class ArmRandomizedGraspEnv(gym.Env):
         vision_filter_coefficient: float = 0.35,
         start_grasped_probability: float = 0.0,
         place_episode_probability: float = 0.0,
+        delivery_episode_probability: float = 0.0,
         start_released_probability: float = 0.0,
+        transport_hold_steps: int = 50,
+        delivery_target_min_xy_separation: float = 0.015,
         grasped_start_joint_positions: tuple[float, ...] | list[float] = (
             0.0,
             1.15968,
@@ -163,7 +166,12 @@ class ArmRandomizedGraspEnv(gym.Env):
         self.vision_filter_coefficient = float(vision_filter_coefficient)
         self.start_grasped_probability = float(start_grasped_probability)
         self.place_episode_probability = float(place_episode_probability)
+        self.delivery_episode_probability = float(delivery_episode_probability)
         self.start_released_probability = float(start_released_probability)
+        self.transport_hold_steps = int(transport_hold_steps)
+        self.delivery_target_min_xy_separation = float(
+            delivery_target_min_xy_separation
+        )
         self.grasped_start_joint_positions = self._vector(
             grasped_start_joint_positions, "grasped_start_joint_positions", 4
         )
@@ -282,12 +290,17 @@ class ArmRandomizedGraspEnv(gym.Env):
         self._reference_pregrasp_joint_positions = np.zeros(4, dtype=np.float64)
         self._object_yaw = 0.0
         self._object_sample_bucket = "center"
+        self._place_target_bucket = "center"
         self._vision_position = self.object_center.copy()
         self._vision_yaw = 0.0
         self._vision_valid = True
         self._vision_dropout_count = 0
         self._started_grasped = False
         self._started_released = False
+        self._delivery_pick_completed = False
+        self._delivery_pick_just_completed = False
+        self._delivery_place_started = False
+        self._transport_hold_count = 0
         self._approach_stage = 0
         self._approach_just_advanced = False
         self._episode_approach_joint_waypoints = np.empty((0, 4))
@@ -357,8 +370,19 @@ class ArmRandomizedGraspEnv(gym.Env):
             raise ValueError("start_grasped_probability must be in [0, 1]")
         if not 0.0 <= self.place_episode_probability <= 1.0:
             raise ValueError("place_episode_probability must be in [0, 1]")
+        if not 0.0 <= self.delivery_episode_probability <= 1.0:
+            raise ValueError("delivery_episode_probability must be in [0, 1]")
+        if self.place_episode_probability + self.delivery_episode_probability > 1.0:
+            raise ValueError(
+                "place_episode_probability + delivery_episode_probability "
+                "must not exceed 1"
+            )
         if not 0.0 <= self.start_released_probability <= 1.0:
             raise ValueError("start_released_probability must be in [0, 1]")
+        if self.transport_hold_steps < 1:
+            raise ValueError("transport_hold_steps must be positive")
+        if self.delivery_target_min_xy_separation < 0.0:
+            raise ValueError("delivery_target_min_xy_separation cannot be negative")
         if self.vision_update_interval_steps < 1:
             raise ValueError("vision_update_interval_steps must be positive")
         if (
@@ -574,19 +598,25 @@ class ArmRandomizedGraspEnv(gym.Env):
         self._object_initial_position = object_position.copy()
         self._object_yaw = object_yaw
         self._object_sample_bucket = bucket
+        self._place_target_bucket = bucket
         self._set_object_pose(object_position, object_yaw)
 
         requested_task = None if options is None else options.get("task")
-        if requested_task not in (None, "pick", "place"):
-            raise ValueError("options['task'] must be 'pick' or 'place'")
-        self._episode_task = str(
-            requested_task
-            or (
-                "place"
-                if self.np_random.random() < self.place_episode_probability
-                else "pick"
+        if requested_task not in (None, "pick", "place", "delivery"):
+            raise ValueError(
+                "options['task'] must be 'pick', 'place', or 'delivery'"
             )
-        )
+        if requested_task is None:
+            task_sample = float(self.np_random.random())
+            if task_sample < self.delivery_episode_probability:
+                requested_task = "delivery"
+            elif task_sample < (
+                self.delivery_episode_probability + self.place_episode_probability
+            ):
+                requested_task = "place"
+            else:
+                requested_task = "pick"
+        self._episode_task = str(requested_task)
 
         self._elapsed_steps = 0
         self._phase = self.PICK_REACH
@@ -615,6 +645,10 @@ class ArmRandomizedGraspEnv(gym.Env):
         self._success_count = 0
         self._started_grasped = False
         self._started_released = False
+        self._delivery_pick_completed = False
+        self._delivery_pick_just_completed = False
+        self._delivery_place_started = False
+        self._transport_hold_count = 0
 
         mujoco.mj_forward(self.model, self.data)
         if self._episode_task == "place":
@@ -732,6 +766,7 @@ class ArmRandomizedGraspEnv(gym.Env):
         self._release_just_triggered = False
         self._release_just_completed = False
         self._approach_just_advanced = False
+        self._delivery_pick_just_completed = False
 
         policy_action = raw_action
         if self._action_delay_steps:
@@ -786,13 +821,19 @@ class ArmRandomizedGraspEnv(gym.Env):
             self._previous_approach_joint_error = float(
                 info["approach_joint_error"]
             )
-        if self._episode_task == "pick":
+        if self._episode_task == "delivery":
+            is_success, info = self._advance_delivery_task(info)
+        elif self._episode_task == "pick":
             success_candidate = bool(
                 self._grasped
                 and self._phase == self.PICK_TO_STAY
                 and info["stay_error"] <= self.stay_tolerance
                 and info["object_clearance"] >= self.minimum_object_clearance
             )
+            self._success_count = (
+                self._success_count + 1 if success_candidate else 0
+            )
+            is_success = self._success_count >= self.success_stable_steps
         else:
             success_candidate = bool(
                 not self._grasped
@@ -800,8 +841,10 @@ class ArmRandomizedGraspEnv(gym.Env):
                 and info["stay_error"] <= self.stay_tolerance
                 and info["placement_error"] <= self.placement_tolerance
             )
-        self._success_count = self._success_count + 1 if success_candidate else 0
-        is_success = self._success_count >= self.success_stable_steps
+            self._success_count = (
+                self._success_count + 1 if success_candidate else 0
+            )
+            is_success = self._success_count >= self.success_stable_steps
         info["success_stable_count"] = self._success_count
         info["is_success"] = is_success
 
@@ -841,6 +884,93 @@ class ArmRandomizedGraspEnv(gym.Env):
         self._previous_stay_error = float(info["stay_error"])
         self._previous_object_height = float(info["object_position"][2])
         return self._get_observation(), float(reward), terminated, truncated, info
+
+    def _advance_delivery_task(
+        self, info: dict[str, Any]
+    ) -> tuple[bool, dict[str, Any]]:
+        """Advance one continuous PICK -> transport hold -> PLACE episode."""
+        if not self._delivery_pick_completed:
+            pick_ready = bool(
+                self._grasped
+                and self._phase == self.PICK_TO_STAY
+                and info["stay_error"] <= self.stay_tolerance
+                and info["object_clearance"] >= self.minimum_object_clearance
+            )
+            self._success_count = self._success_count + 1 if pick_ready else 0
+            if self._success_count >= self.success_stable_steps:
+                self._delivery_pick_completed = True
+                self._delivery_pick_just_completed = True
+                self._success_count = 0
+            return False, info
+
+        if self._phase == self.PICK_TO_STAY:
+            transport_ready = bool(
+                self._grasped and info["stay_error"] <= self.stay_tolerance
+            )
+            self._transport_hold_count = (
+                self._transport_hold_count + 1 if transport_ready else 0
+            )
+            if self._transport_hold_count >= self.transport_hold_steps:
+                self._begin_delivery_place()
+                info = self._get_info()
+                self._previous_reach_distance = float(info["reach_distance"])
+                self._previous_approach_joint_error = float(
+                    info["approach_joint_error"]
+                )
+            return False, info
+
+        final_ready = bool(
+            self._delivery_place_started
+            and not self._grasped
+            and self._phase == self.PLACE_TO_STAY
+            and info["stay_error"] <= self.stay_tolerance
+            and info["placement_error"] <= self.placement_tolerance
+        )
+        self._success_count = self._success_count + 1 if final_ready else 0
+        return self._success_count >= self.success_stable_steps, info
+
+    def _begin_delivery_place(self) -> None:
+        target_position = self._place_target_position.copy()
+        target_bucket = self._place_target_bucket
+        for _ in range(32):
+            candidate, _, bucket = self._sample_object_pose(
+                {"object_yaw": self._object_yaw}
+            )
+            target_position = candidate
+            target_bucket = bucket
+            if (
+                np.linalg.norm(
+                    candidate[:2] - self._object_initial_position[:2]
+                )
+                >= self.delivery_target_min_xy_separation
+            ):
+                break
+
+        self._place_target_position = target_position
+        self._place_target_bucket = target_bucket
+        self._phase = self.PLACE_REACH
+        self._delivery_place_started = True
+        self._transport_hold_count = self.transport_hold_steps
+        self._approach_stage = 0
+        self._approach_just_advanced = False
+        self._close_gate_count = 0
+        self._close_just_triggered = False
+        self._closing = False
+        self._closing_steps = 0
+        self._release_gate_count = 0
+        self._release_just_triggered = False
+        self._release_just_completed = False
+        self._releasing = False
+        self._release_steps = 0
+        self._success_count = 0
+        self._vision_position = target_position.copy()
+        self._vision_valid = True
+        self._update_vision(force=True)
+        self._set_reach_target(self._pregrasp_target(self._vision_position))
+        self._configure_approach_waypoints(self._vision_position)
+        self._reference_pregrasp_joint_positions = (
+            self._solve_reference_pregrasp(self._vision_position)
+        )
 
     def render(self) -> np.ndarray | None:
         if self.render_mode != "rgb_array":
@@ -932,7 +1062,7 @@ class ArmRandomizedGraspEnv(gym.Env):
 
         true_position = (
             self._place_target_position
-            if self._episode_task == "place" and self._phase == self.PLACE_REACH
+            if self._phase == self.PLACE_REACH
             else self.data.site_xpos[self._object_site_id]
         )
         noise = self.np_random.normal(0.0, self.vision_position_noise_std)
@@ -1323,12 +1453,17 @@ class ArmRandomizedGraspEnv(gym.Env):
             "placement_error": placement_error,
             "object_yaw": self._object_yaw,
             "object_sample_bucket": self._object_sample_bucket,
+            "place_target_bucket": self._place_target_bucket,
             "vision_position": self._vision_position.copy(),
             "vision_yaw": self._vision_yaw,
             "vision_valid": self._vision_valid,
             "vision_dropout_count": self._vision_dropout_count,
             "started_grasped": self._started_grasped,
             "started_released": self._started_released,
+            "delivery_pick_completed": self._delivery_pick_completed,
+            "delivery_place_started": self._delivery_place_started,
+            "transport_hold_count": self._transport_hold_count,
+            "transport_hold_steps": self.transport_hold_steps,
             "reference_control_enabled": self.reference_control_enabled,
             "gripper_pitch_hold_enabled": self.gripper_pitch_hold_enabled,
             "gripper_pitch_target": self.gripper_pitch_target,
@@ -1357,7 +1492,15 @@ class ArmRandomizedGraspEnv(gym.Env):
             "releasing": self._releasing,
             "release_steps": self._release_steps,
             "released": bool(
-                self._episode_task == "place" and not self._grasped
+                (
+                    self._episode_task == "place"
+                    or (
+                        self._episode_task == "delivery"
+                        and self._delivery_place_started
+                        and self._phase == self.PLACE_TO_STAY
+                    )
+                )
+                and not self._grasped
             ),
             "is_grasped": self._grasped,
             "is_success": False,
@@ -1472,6 +1615,15 @@ class ArmRandomizedGraspEnv(gym.Env):
             reward += weights["grasp_bonus"]
         if self._release_just_completed:
             reward += weights["release_bonus"]
+        if self._delivery_pick_just_completed:
+            reward += weights.get("delivery_pick_bonus", 0.0)
+        if (
+            self._episode_task == "delivery"
+            and self._delivery_pick_completed
+            and self._phase == self.PICK_TO_STAY
+            and self._grasped
+        ):
+            reward += weights.get("transport_holding", 0.0)
         if self._failed_close:
             reward -= weights["failed_close"]
         if info["is_success"]:

@@ -34,7 +34,13 @@ environment:
   vision_filter_coefficient: 0.35
   start_grasped_probability: 0.0
   place_episode_probability: 0.0
+  delivery_episode_probability: 0.0
   start_released_probability: 0.0
+  # One delivery episode keeps the object at Stay before changing to PLACE.
+  # Base navigation remains an external controller; these steps train the arm
+  # to hold the object safely across that handoff without changing 33D/4D I/O.
+  transport_hold_steps: 50
+  delivery_target_min_xy_separation: 0.015
   grasped_start_joint_positions: [0.0, 1.15968, -0.48813, -0.67155]
 
   # Joint references define a collision-free EEF corridor; joint1 follows bearing.
@@ -97,6 +103,8 @@ environment:
     approach_waypoint_bonus: 5.0
     close_ready_bonus: 2.0
     grasp_bonus: 15.0
+    delivery_pick_bonus: 25.0
+    transport_holding: 0.20
     release_bonus: 15.0
     placed: 0.20
     stay_progress: 30.0
@@ -241,6 +249,70 @@ curriculum:
         vision_yaw_noise_std: 0.035
         vision_update_interval_steps: 2
         vision_dropout_probability: 0.02
+
+    - name: delivery_center
+      timesteps: 60000
+      environment:
+        max_episode_steps: 750
+        object_position_range: [0.004, 0.004, 0.0]
+        object_yaw_range: 0.20
+        edge_sample_probability: 0.0
+        initial_joint_noise: [0.005, 0.005, 0.005, 0.005]
+        place_episode_probability: 0.0
+        delivery_episode_probability: 1.0
+        start_grasped_probability: 0.0
+        start_released_probability: 0.0
+        transport_hold_steps: 25
+        delivery_target_min_xy_separation: 0.002
+
+    - name: delivery_full_tower
+      timesteps: 100000
+      environment:
+        max_episode_steps: 850
+        reference_action_limit: 0.80
+        final_approach_action_limit: 1.0
+        object_position_range: [0.024, 0.024, 0.0]
+        object_yaw_range: 3.141592653589793
+        edge_sample_probability: 0.55
+        initial_joint_noise: [0.015, 0.015, 0.015, 0.015]
+        place_episode_probability: 0.0
+        delivery_episode_probability: 1.0
+        start_grasped_probability: 0.0
+        start_released_probability: 0.0
+        transport_hold_steps: 50
+        delivery_target_min_xy_separation: 0.015
+        vision_position_noise_std: [0.002, 0.002, 0.002]
+        vision_yaw_noise_std: 0.035
+        vision_update_interval_steps: 2
+        vision_dropout_probability: 0.02
+
+    - name: delivery_sim2real_robust
+      timesteps: 160000
+      environment:
+        max_episode_steps: 1000
+        reference_action_limit: 0.65
+        final_approach_action_limit: 1.0
+        object_position_range: [0.024, 0.024, 0.0]
+        object_yaw_range: 3.141592653589793
+        edge_sample_probability: 0.55
+        tower_position_range: [0.012, 0.020]
+        tower_height_range: 0.015
+        object_size_scale_range: [0.90, 1.10]
+        arm_damping_scale_range: [0.80, 1.20]
+        actuator_gain_scale_range: [0.85, 1.15]
+        friction_scale_range: [0.70, 1.30]
+        maximum_action_delay_steps: 2
+        initial_joint_noise: [0.020, 0.020, 0.020, 0.020]
+        place_episode_probability: 0.0
+        delivery_episode_probability: 1.0
+        start_grasped_probability: 0.0
+        start_released_probability: 0.0
+        transport_hold_steps: 75
+        delivery_target_min_xy_separation: 0.015
+        vision_position_noise_std: [0.003, 0.003, 0.003]
+        vision_yaw_noise_std: 0.050
+        vision_update_interval_steps: 3
+        vision_dropout_probability: 0.05
 
     - name: base_stop_robust
       timesteps: 100000

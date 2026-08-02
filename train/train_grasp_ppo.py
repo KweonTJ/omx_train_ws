@@ -105,6 +105,26 @@ def _write_metadata(
     arm_qpos_addresses = _joint_qpos_addresses(
         mujoco_model, ARM_JOINT_NAMES
     )
+    place_stages = {
+        "place_center",
+        "place_return_center",
+        "place_full_tower",
+        "pick_place_mixed",
+        "base_stop_robust",
+        "height_robust",
+        "sim2real_robust",
+        "delivery_center",
+        "delivery_full_tower",
+        "delivery_sim2real_robust",
+    }
+    delivery_stages = {
+        "delivery_center",
+        "delivery_full_tower",
+        "delivery_sim2real_robust",
+    }
+    supported_commands = ["PICK"]
+    if place_stages.intersection(completed_stages):
+        supported_commands.append("PLACE")
     metadata = {
         "policy_version": output_dir.name,
         "policy_name": config["experiment"]["name"],
@@ -116,6 +136,10 @@ def _write_metadata(
         "action_schema_version": 3,
         "action_size": int(config["model"]["expected_action_size"]),
         "joint_names": list(ARM_JOINT_NAMES),
+        "supported_commands": supported_commands,
+        "delivery_sequence_trained": bool(
+            delivery_stages.intersection(completed_stages)
+        ),
         "control_mode": "reference_plus_residual_with_joint4_pitch_coupling",
         "control_period_s": float(
             mujoco_model.opt.timestep * environment_config["frame_skip"]
@@ -138,6 +162,17 @@ def _write_metadata(
         "gripper_pitch_joint4_max_step": float(
             environment_config["gripper_pitch_joint4_max_step"]
         ),
+        "transport_hold_steps": int(environment_config["transport_hold_steps"]),
+        "delivery_stage_transport_hold_steps": {
+            stage["name"]: int(
+                stage.get("environment", {}).get(
+                    "transport_hold_steps",
+                    environment_config["transport_hold_steps"],
+                )
+            )
+            for stage in config["curriculum"]["stages"]
+            if stage["name"].startswith("delivery_")
+        },
         "stay_joint_positions": [
             float(value)
             for value in mujoco_model.key_qpos[
@@ -164,6 +199,14 @@ def _completed_stages_from_resume(resume_path: Path | None) -> list[str]:
     if not isinstance(stages, list) or not all(isinstance(item, str) for item in stages):
         raise ValueError(f"Invalid completed_stages in {metadata_path}")
     return list(stages)
+
+
+def _preserve_sample_counter(model: PPO, stage_end_timesteps: int) -> PPO:
+    """Keep all sampled transitions after promoting earlier best weights."""
+    if stage_end_timesteps < int(model.num_timesteps):
+        raise ValueError("stage_end_timesteps cannot move the counter backward")
+    model.num_timesteps = int(stage_end_timesteps)
+    return model
 
 
 def parse_args() -> argparse.Namespace:
@@ -326,6 +369,7 @@ def main() -> None:
             reset_num_timesteps=False,
             tb_log_name=stage_name,
         )
+        stage_end_timesteps = int(model.num_timesteps)
         best_model_path = best_dir / stage_name / "best_model.zip"
         if best_model_path.exists():
             model = PPO.load(
@@ -337,6 +381,10 @@ def main() -> None:
             model.learning_rate = float(ppo_config["learning_rate"])
             model.lr_schedule = FloatSchedule(model.learning_rate)
             model.ent_coef = float(ppo_config["ent_coef"])
+            # EvalCallback stores the counter at the best evaluation point.
+            # Keep the promoted weights, but preserve every sampled transition
+            # in the cumulative training counter across curriculum stages.
+            model = _preserve_sample_counter(model, stage_end_timesteps)
             print(f"Promoted stage best model: {best_model_path}")
         total_timesteps = int(model.num_timesteps)
         if stage_name not in completed_stages:
