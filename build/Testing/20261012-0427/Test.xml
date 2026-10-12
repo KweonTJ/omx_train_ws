@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20261012-0427-Experimental"
+	Name="ktj"
+	Generator="ctest-3.22.1"
+	CompilerName="/usr/bin/c++"
+	CompilerVersion="11.4.0"
+	OSName="Linux"
+	Hostname="ktj"
+	OSRelease="6.8.0-138-generic"
+	OSVersion="#138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC "
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="186"
+	ProcessorCacheSize="24576"
+	NumberOfLogicalCPU="20"
+	NumberOfPhysicalCPU="14"
+	TotalVirtualMemory="16383"
+	TotalPhysicalMemory="13696"
+	LogicalProcessorsPerPhysical="1"
+	ProcessorClockFrequency="3499.9"
+	>
+	<Testing>
+		<StartDateTime>Oct 12 13:27 KST</StartDateTime>
+		<StartTestTime>1791779259</StartTestTime>
+		<TestList/>
+		<EndDateTime>Oct 12 13:27 KST</EndDateTime>
+		<EndTestTime>1791779259</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

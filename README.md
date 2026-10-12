@@ -92,6 +92,7 @@ scripts/      모델·정책 계약 검사
 5. [`05. 실제 Stay 기준 PPO v3 재학습 기록.md`](docs/05.%20실제%20Stay%20기준%20PPO%20v3%20재학습%20기록.md) — 실제 로봇 Stay 자세를 적용한 재학습 결과
 6. [`06. 현재 v3 모델 분석과 PICK-TRANSPORT-PLACE 재학습 계획.md`](docs/06.%20현재%20v3%20모델%20분석과%20PICK-TRANSPORT-PLACE%20재학습%20계획.md) — PICK 전용 배포 모델의 정확한 한계와 연속 배송 성공 계약
 7. [`07. 연속 배송 pitch-hold PPO v4 재학습 결과.md`](docs/07.%20연속%20배송%20pitch-hold%20PPO%20v4%20재학습%20결과.md) — 새 모델의 학습, 100회 평가, 뷰어 및 artifact 결과
+8. [`08. 2단 서랍 물품 인출 및 팔로워 봇 적재 고도화 계획.md`](docs/08.%202단%20서랍%20물품%20인출%20및%20팔로워%20봇%20적재%20고도화%20계획.md) — 기존 weight를 쓰지 않는 신규 서랍 모델과 TurtleBot3 platooning follower 상면 적재 환경 계획
 
 ## 검증과 학습
 

@@ -1,0 +1,4 @@
+source;share/omx_training_gazebo/local_setup.bash
+source;share/omx_training_gazebo/local_setup.dsv
+source;share/omx_training_gazebo/local_setup.sh
+source;share/omx_training_gazebo/local_setup.zsh
