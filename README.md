@@ -2,6 +2,10 @@
 
 `omx_train_ws`는 TurtleBot3 Waffle Pi와 OpenMANIPULATOR-X를 사용하는 배송 로봇의 **팔 전용 PPO 학습 저장소**다. 정책은 `joint1`~`joint4`만 제어하며, 베이스 이동과 그리퍼 개폐는 런타임 상태 머신이 담당한다.
 
+[Digital Twin Lab](https://kweontj.github.io/KweonTJ/lab/) · [선반·배송 MuJoCo 실행 안내](docs/digital-twin.md)
+
+웹과 같은 디자인의 네이티브 뷰어: `python scripts/view_twin.py --scene shelf` 또는 `--scene delivery`. 선반은 기구학 표시, 배송은 기존 물리 샌드박스다. 기존 PPO 재생 뷰어에도 같은 색상·조명·그리드·시점을 적용했다.
+
 ## 학습 임무
 
 ```mermaid

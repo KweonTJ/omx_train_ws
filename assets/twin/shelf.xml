@@ -1,0 +1,987 @@
+<mujoco model="OMX shelf twin — kinematic display">
+  <compiler angle="radian" eulerseq="xyz" autolimits="true" />
+  <option gravity="0 0 0" timestep="0.002" />
+  <statistic center="0.12 0 0.22" extent="0.8" />
+  <visual>
+    <global azimuth="45" elevation="-25" offwidth="1200" offheight="800" />
+  </visual>
+  <asset>
+    <texture name="sky" type="skybox" builtin="gradient" rgb1="0.035 0.055 0.09" rgb2="0.035 0.055 0.09" width="64" height="64" />
+    <material name="floor_mat" rgba="0.055 0.08 0.125 1" />
+    <material name="material_0" rgba="0.34 0.39 0.46 1" shininess=".15" specular=".2" />
+    <mesh name="mesh_0" file="meshes/leader_video/lower_plate.stl" scale="1 1 1" />
+    <mesh name="mesh_1" file="meshes/leader_video/camera_plate.stl" scale="1 1 1" />
+    <material name="material_1" rgba="0.12 0.14 0.17 1" shininess=".15" specular=".2" />
+    <material name="material_2" rgba="0.04 0.37 0.58 1" shininess=".15" specular=".2" />
+    <texture name="texture_0" type="2d" file="meshes/leader_video/jetson_pcb.png" />
+    <material name="material_3" rgba="0.04 0.46 0.36 1" shininess=".15" specular=".2" texture="texture_0" />
+    <material name="material_4" rgba="0.88 0.64 0.24 1" shininess=".15" specular=".2" />
+    <material name="material_5" rgba="0.04 0.46 0.36 1" shininess=".15" specular=".2" />
+    <material name="material_6" rgba="0.5 0.54 0.61 1" shininess=".15" specular=".2" />
+    <material name="material_7" rgba="0.8 0.84 0.89 1" shininess=".15" specular=".2" />
+    <material name="material_8" rgba="0.04 0.23 0.65 1" shininess=".15" specular=".2" />
+    <material name="material_9" rgba="0.055 0.065 0.08 1" shininess=".15" specular=".2" />
+    <mesh name="mesh_2" file="meshes/leader_video/track.stl" scale="1 1 1" />
+    <material name="material_10" rgba="0.24 0.4 0.55 1" shininess=".15" specular=".2" />
+    <mesh name="mesh_3" file="meshes/leader_video/motor_left.stl" scale="1 1 1" />
+    <mesh name="mesh_4" file="meshes/leader_video/sprocket.stl" scale="1 1 1" />
+    <mesh name="mesh_5" file="meshes/leader_video/motor_right.stl" scale="1 1 1" />
+    <texture name="texture_1" type="2d" file="meshes/leader_video/opencr_pcb.png" />
+    <material name="material_11" rgba="0.06 0.48 0.24 1" shininess=".15" specular=".2" texture="texture_1" />
+    <material name="material_12" rgba="0.87 0.89 0.83 1" shininess=".15" specular=".2" />
+    <material name="material_13" rgba="0.65 0.67 0.69 1" shininess=".15" specular=".2" />
+    <mesh name="mesh_6" file="meshes/leader_video/upper_plate.stl" scale="1 1 1" />
+    <material name="material_14" rgba="0.06 0.48 0.24 1" shininess=".15" specular=".2" />
+    <material name="material_15" rgba="0.46 0.51 0.58 1" shininess=".15" specular=".2" />
+    <mesh name="mesh_7" file="meshes/open_manipulator_x/link1.stl" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_8" file="meshes/open_manipulator_x/link2.stl" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_9" file="meshes/open_manipulator_x/link3.stl" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_10" file="meshes/open_manipulator_x/link4.stl" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_11" file="meshes/open_manipulator_x/link5.stl" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_12" file="meshes/open_manipulator_x/gripper_left_palm.stl" scale="0.001 0.001 0.001" />
+    <mesh name="mesh_13" file="meshes/open_manipulator_x/gripper_right_palm.stl" scale="0.001 0.001 0.001" />
+    <material name="material_16" rgba="0.48 0.32 0.19 1" shininess=".15" specular=".2" />
+    <material name="material_17" rgba="0.73 0.76 0.79 1" shininess=".15" specular=".2" />
+  </asset>
+  <worldbody>
+    <light pos="0.3 -0.7 1.5" dir="-0.2 0.5 -1" diffuse="0.8 0.85 0.95" />
+    <geom name="floor" type="plane" size="2 2 .02" material="floor_mat" contype="0" conaffinity="0" />
+    <body name="base_footprint">
+      <body name="base_link" pos="0 0 0.016" quat="1 0 0 0">
+        <geom name="base_link_visual_0" pos="-0.064 0 0.00425" quat="1 0 0 0" type="mesh" material="material_0" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_0" />
+        <geom name="base_link_visual_1" pos="-0.064 0 0.05325" quat="1 0 0 0" type="mesh" material="material_0" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_0" />
+        <body name="wheel_left_link" pos="0 0.144 0.023" quat="0.707388269167 -0.706825181105 0 0">
+          <joint name="wheel_left_joint" axis="0 0 1" type="hinge" />
+          <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+        </body>
+        <body name="wheel_right_link" pos="0 -0.144 0.023" quat="0.707388269167 -0.706825181105 0 0">
+          <joint name="wheel_right_joint" axis="0 0 1" type="hinge" />
+          <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+        </body>
+        <body name="caster_back_right_link" pos="-0.177 -0.064 -0.004" quat="0.707388269167 -0.706825181105 0 0" />
+        <body name="caster_back_left_link" pos="-0.177 0.064 -0.004" quat="0.707388269167 -0.706825181105 0 0" />
+        <body name="imu_link" pos="0 0 0.081" quat="1 0 0 0" />
+        <body name="camera_plate_link" pos="-0.064 0 0.11725" quat="1 0 0 0">
+          <geom name="camera_plate_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_0" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_1" />
+          <body name="camera_link" pos="0.109 0 0.0025" quat="1 0 0 0">
+            <body name="camera_color_frame" pos="-0.002 0.0125 0.03325" quat="0.999997750002 -0.00149999775 2.2499983125e-06 -0.00149999775">
+              <body name="camera_color_optical_frame" pos="0 0 0" quat="0.5 -0.5 0.5 -0.5" />
+            </body>
+            <body name="camera_depth_frame" pos="0 0 0.03325" quat="1 0 0 0">
+              <body name="camera_depth_optical_frame" pos="0 0 0" quat="0.5 -0.5 0.5 -0.5" />
+            </body>
+          </body>
+          <body name="camera_astra_visual_frame" pos="0.109 0 0.0025" quat="1 0 0 0">
+            <geom name="camera_astra_visual_frame_visual_0" pos="-0.0310887850467 0 0.0415794392523" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.0205607476636 0.0693925233645 0.0154205607477" />
+            <geom name="camera_astra_visual_frame_visual_1" pos="-0.0310887850467 0.0693925233645 0.0415794392523" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.0154205607477 0.0205607476636" />
+            <geom name="camera_astra_visual_frame_visual_2" pos="-0.0310887850467 -0.0693925233645 0.0415794392523" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.0154205607477 0.0205607476636" />
+            <geom name="camera_astra_visual_frame_visual_3" pos="-0.0403411214953 0 0.0140794392523" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.0308411214953 0.0308411214953 0.0120794392523" />
+            <body name="camera_astra_visual_frame__visual_1" pos="0 0 0" quat="1 0 0 0">
+              <geom name="camera_astra_visual_frame__visual_1_visual_0" pos="-0.0100140186916 0.046261682243 0.0415794392523" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_2" contype="0" conaffinity="0" mass="0" group="1" size="0.00822429906542 0.000514018691589" />
+              <geom name="camera_astra_visual_frame__visual_1_visual_1" pos="-0.0100140186916 -0.017476635514 0.0415794392523" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_2" contype="0" conaffinity="0" mass="0" group="1" size="0.00822429906542 0.000514018691589" />
+              <geom name="camera_astra_visual_frame__visual_1_visual_2" pos="-0.0100140186916 -0.046261682243 0.0415794392523" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_2" contype="0" conaffinity="0" mass="0" group="1" size="0.00514018691589 0.000514018691589" />
+            </body>
+          </body>
+          <body name="jetson_orin_nano_link" pos="-0.026 0 0.0045" quat="1 0 0 0">
+            <geom name="jetson_orin_nano_link_visual_0" pos="0 0 0.0068" quat="1 0 0 0" type="box" material="material_3" contype="0" conaffinity="0" mass="0" group="1" size="0.05 0.0395 0.0008" />
+            <body name="jetson_orin_nano_link__visual_1" pos="0 0 0" quat="1 0 0 0">
+              <geom name="jetson_orin_nano_link__visual_1_visual_0" pos="0.044 0.033 0.003" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.003" />
+              <geom name="jetson_orin_nano_link__visual_1_visual_1" pos="0.044 -0.033 0.003" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.003" />
+              <geom name="jetson_orin_nano_link__visual_1_visual_2" pos="-0.044 0.033 0.003" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.003" />
+              <geom name="jetson_orin_nano_link__visual_1_visual_3" pos="-0.044 -0.033 0.003" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.003" />
+            </body>
+            <body name="jetson_orin_nano_link__visual_2" pos="0 0 0" quat="1 0 0 0">
+              <geom name="jetson_orin_nano_link__visual_2_visual_0" pos="0.006 0 0.0096" quat="1 0 0 0" type="box" material="material_5" contype="0" conaffinity="0" mass="0" group="1" size="0.024 0.021 0.002" />
+            </body>
+            <body name="jetson_orin_nano_link__visual_3" pos="0 0 0" quat="1 0 0 0">
+              <geom name="jetson_orin_nano_link__visual_3_visual_0" pos="0.006 0 0.0131" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.023 0.0015" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_1" pos="0.006 0.0208 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_2" pos="0.006 0.017 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_3" pos="0.006 0.0132 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_4" pos="0.006 0.0094 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_5" pos="0.006 0.0056 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_6" pos="0.006 0.0018 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_7" pos="0.006 -0.002 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_8" pos="0.006 -0.0058 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_9" pos="0.006 -0.0096 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_10" pos="0.006 -0.0134 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_11" pos="0.006 -0.0172 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_12" pos="0.006 -0.021 0.0213" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.026 0.00075 0.0067" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_13" pos="0.006 0 0.03" quat="1 0 0 0" type="cylinder" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.02 0.002" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_14" pos="0.044 0 0.0116" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.0255 0.004" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_15" pos="-0.0496 0.014 0.0146" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.00025 0.0055 0.0045" />
+              <geom name="jetson_orin_nano_link__visual_3_visual_16" pos="0.028 0.034 0.0126" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.0055 0.0045 0.005" />
+            </body>
+            <body name="jetson_orin_nano_link__visual_4" pos="0 0 0" quat="1 0 0 0">
+              <geom name="jetson_orin_nano_link__visual_4_visual_0" pos="0.006 0 0.0325" quat="-1 -0 0 1.22464679915e-16" type="box" material="material_6" contype="0" conaffinity="0" mass="0" group="1" size="0.018 0.001 0.0005" />
+              <geom name="jetson_orin_nano_link__visual_4_visual_1" pos="0.006 0 0.0325" quat="-0.900968867902 -0 0 0.433883739118" type="box" material="material_6" contype="0" conaffinity="0" mass="0" group="1" size="0.018 0.001 0.0005" />
+              <geom name="jetson_orin_nano_link__visual_4_visual_2" pos="0.006 0 0.0325" quat="-0.623489801859 -0 0 0.781831482468" type="box" material="material_6" contype="0" conaffinity="0" mass="0" group="1" size="0.018 0.001 0.0005" />
+              <geom name="jetson_orin_nano_link__visual_4_visual_3" pos="0.006 0 0.0325" quat="-0.222520933956 -0 0 0.974927912182" type="box" material="material_6" contype="0" conaffinity="0" mass="0" group="1" size="0.018 0.001 0.0005" />
+              <geom name="jetson_orin_nano_link__visual_4_visual_4" pos="0.006 0 0.0325" quat="0.222520933956 0 0 0.974927912182" type="box" material="material_6" contype="0" conaffinity="0" mass="0" group="1" size="0.018 0.001 0.0005" />
+              <geom name="jetson_orin_nano_link__visual_4_visual_5" pos="0.006 0 0.0325" quat="0.623489801859 0 0 0.781831482468" type="box" material="material_6" contype="0" conaffinity="0" mass="0" group="1" size="0.018 0.001 0.0005" />
+              <geom name="jetson_orin_nano_link__visual_4_visual_6" pos="0.006 0 0.0325" quat="0.900968867902 0 0 0.433883739118" type="box" material="material_6" contype="0" conaffinity="0" mass="0" group="1" size="0.018 0.001 0.0005" />
+            </body>
+            <body name="jetson_orin_nano_link__visual_5" pos="0 0 0" quat="1 0 0 0">
+              <geom name="jetson_orin_nano_link__visual_5_visual_0" pos="0.006 0 0.034" quat="1 0 0 0" type="cylinder" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.007 0.001" />
+              <geom name="jetson_orin_nano_link__visual_5_visual_1" pos="-0.041 -0.027 0.0156" quat="1 0 0 0" type="box" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.0085 0.007 0.008" />
+              <geom name="jetson_orin_nano_link__visual_5_visual_2" pos="-0.041 -0.007 0.0156" quat="1 0 0 0" type="box" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.0085 0.007 0.008" />
+              <geom name="jetson_orin_nano_link__visual_5_visual_3" pos="-0.041 0.014 0.0146" quat="1 0 0 0" type="box" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.0085 0.0085 0.007" />
+              <geom name="jetson_orin_nano_link__visual_5_visual_4" pos="-0.044 0.032 0.0101" quat="1 0 0 0" type="box" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.006 0.007 0.0025" />
+              <geom name="jetson_orin_nano_link__visual_5_visual_5" pos="0.04 -0.033 0.0091" quat="1 0 0 0" type="box" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.0035 0.004 0.0015" />
+            </body>
+            <body name="jetson_orin_nano_link__visual_6" pos="0 0 0" quat="1 0 0 0">
+              <geom name="jetson_orin_nano_link__visual_6_visual_0" pos="-0.0496 -0.027 0.012" quat="1 0 0 0" type="box" material="material_8" contype="0" conaffinity="0" mass="0" group="1" size="0.00025 0.0055 0.002" />
+              <geom name="jetson_orin_nano_link__visual_6_visual_1" pos="-0.0496 -0.027 0.019" quat="1 0 0 0" type="box" material="material_8" contype="0" conaffinity="0" mass="0" group="1" size="0.00025 0.0055 0.002" />
+              <geom name="jetson_orin_nano_link__visual_6_visual_2" pos="-0.0496 -0.007 0.012" quat="1 0 0 0" type="box" material="material_8" contype="0" conaffinity="0" mass="0" group="1" size="0.00025 0.0055 0.002" />
+              <geom name="jetson_orin_nano_link__visual_6_visual_3" pos="-0.0496 -0.007 0.019" quat="1 0 0 0" type="box" material="material_8" contype="0" conaffinity="0" mass="0" group="1" size="0.00025 0.0055 0.002" />
+            </body>
+          </body>
+        </body>
+        <body name="track_left_link" pos="0 0.0925 0.023" quat="1 0 0 0">
+          <geom name="track_left_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_9" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_2" />
+        </body>
+        <body name="motor_front_left_link" pos="0 0.0925 0.023" quat="1 0 0 0">
+          <geom name="motor_front_left_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_10" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_3" />
+          <body name="sprocket_front_left_link" pos="0 0 0" quat="1 0 0 0">
+            <joint name="drive_front_left_joint" axis="0 1 0" type="hinge" />
+            <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+            <geom name="sprocket_front_left_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_6" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_4" />
+            <body name="sprocket_front_left_link__visual_1" pos="0 0 0" quat="1 0 0 0">
+              <geom name="sprocket_front_left_link__visual_1_visual_0" pos="0 -0.004 0" quat="0.707106781187 0.707106781187 0 0" type="cylinder" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.008 0.006" />
+            </body>
+          </body>
+        </body>
+        <body name="motor_rear_left_link" pos="-0.1385 0.0925 0.023" quat="6.12323399574e-17 0 1 0">
+          <geom name="motor_rear_left_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_10" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_3" />
+          <body name="sprocket_rear_left_link" pos="0 0 0" quat="1 0 0 0">
+            <joint name="drive_rear_left_joint" axis="0 1 0" type="hinge" />
+            <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+            <geom name="sprocket_rear_left_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_6" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_4" />
+            <body name="sprocket_rear_left_link__visual_1" pos="0 0 0" quat="1 0 0 0">
+              <geom name="sprocket_rear_left_link__visual_1_visual_0" pos="0 -0.004 0" quat="0.707106781187 0.707106781187 0 0" type="cylinder" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.008 0.006" />
+            </body>
+          </body>
+        </body>
+        <body name="track_right_link" pos="0 -0.0925 0.023" quat="1 0 0 0">
+          <geom name="track_right_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_9" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_2" />
+        </body>
+        <body name="motor_front_right_link" pos="0 -0.0925 0.023" quat="1 0 0 0">
+          <geom name="motor_front_right_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_10" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_5" />
+          <body name="sprocket_front_right_link" pos="0 0 0" quat="1 0 0 0">
+            <joint name="drive_front_right_joint" axis="0 1 0" type="hinge" />
+            <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+            <geom name="sprocket_front_right_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_6" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_4" />
+            <body name="sprocket_front_right_link__visual_1" pos="0 0 0" quat="1 0 0 0">
+              <geom name="sprocket_front_right_link__visual_1_visual_0" pos="0 0.004 0" quat="0.707106781187 0.707106781187 0 0" type="cylinder" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.008 0.006" />
+            </body>
+          </body>
+        </body>
+        <body name="motor_rear_right_link" pos="-0.1385 -0.0925 0.023" quat="6.12323399574e-17 0 1 0">
+          <geom name="motor_rear_right_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_10" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_5" />
+          <body name="sprocket_rear_right_link" pos="0 0 0" quat="1 0 0 0">
+            <joint name="drive_rear_right_joint" axis="0 1 0" type="hinge" />
+            <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+            <geom name="sprocket_rear_right_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_6" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_4" />
+            <body name="sprocket_rear_right_link__visual_1" pos="0 0 0" quat="1 0 0 0">
+              <geom name="sprocket_rear_right_link__visual_1_visual_0" pos="0 0.004 0" quat="0.707106781187 0.707106781187 0 0" type="cylinder" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.008 0.006" />
+            </body>
+          </body>
+        </body>
+        <body name="opencr_link" pos="-0.032 0 0.05775" quat="1 0 0 0">
+          <geom name="opencr_link_visual_0" pos="0 0 0.0068" quat="1 0 0 0" type="box" material="material_11" contype="0" conaffinity="0" mass="0" group="1" size="0.0525 0.0375 0.0008" />
+          <body name="opencr_link__visual_1" pos="0 0 0" quat="1 0 0 0">
+            <geom name="opencr_link__visual_1_visual_0" pos="0.046 0.03 0.003" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.003" />
+            <geom name="opencr_link__visual_1_visual_1" pos="0.046 -0.03 0.003" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.003" />
+            <geom name="opencr_link__visual_1_visual_2" pos="-0.046 0.03 0.003" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.003" />
+            <geom name="opencr_link__visual_1_visual_3" pos="-0.046 -0.03 0.003" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.0025 0.003" />
+          </body>
+          <body name="opencr_link__visual_2" pos="0 0 0" quat="1 0 0 0">
+            <geom name="opencr_link__visual_2_visual_0" pos="0 0 0.0086" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.007 0.007 0.001" />
+            <geom name="opencr_link__visual_2_visual_1" pos="0 -0.03 0.0116" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.0315 0.0025 0.004" />
+            <geom name="opencr_link__visual_2_visual_2" pos="0 0.016 0.0116" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.025 0.0025 0.004" />
+            <geom name="opencr_link__visual_2_visual_3" pos="-0.045 -0.013 0.0126" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.0055 0.006 0.005" />
+          </body>
+          <body name="opencr_link__visual_3" pos="0 0 0" quat="1 0 0 0">
+            <geom name="opencr_link__visual_3_visual_0" pos="-0.034 0.031 0.0106" quat="1 0 0 0" type="box" material="material_12" contype="0" conaffinity="0" mass="0" group="1" size="0.005 0.003 0.003" />
+            <geom name="opencr_link__visual_3_visual_1" pos="-0.021 0.031 0.0106" quat="1 0 0 0" type="box" material="material_12" contype="0" conaffinity="0" mass="0" group="1" size="0.006 0.003 0.003" />
+            <geom name="opencr_link__visual_3_visual_2" pos="-0.006 0.031 0.0106" quat="1 0 0 0" type="box" material="material_12" contype="0" conaffinity="0" mass="0" group="1" size="0.005 0.003 0.003" />
+            <geom name="opencr_link__visual_3_visual_3" pos="0.007 0.031 0.0106" quat="1 0 0 0" type="box" material="material_12" contype="0" conaffinity="0" mass="0" group="1" size="0.006 0.003 0.003" />
+            <geom name="opencr_link__visual_3_visual_4" pos="0.022 0.031 0.0106" quat="1 0 0 0" type="box" material="material_12" contype="0" conaffinity="0" mass="0" group="1" size="0.005 0.003 0.003" />
+            <geom name="opencr_link__visual_3_visual_5" pos="0.035 0.031 0.0106" quat="1 0 0 0" type="box" material="material_12" contype="0" conaffinity="0" mass="0" group="1" size="0.006 0.003 0.003" />
+          </body>
+          <body name="opencr_link__visual_4" pos="0 0 0" quat="1 0 0 0">
+            <geom name="opencr_link__visual_4_visual_0" pos="0.047 0 0.0096" quat="1 0 0 0" type="box" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.0045 0.004 0.002" />
+            <geom name="opencr_link__visual_4_visual_1" pos="-0.03 -0.013 0.0116" quat="1 0 0 0" type="cylinder" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.0035 0.004" />
+          </body>
+        </body>
+        <body name="support_front_left_link" pos="0.043 0.05 0.145" quat="1 0 0 0">
+          <geom name="support_front_left_link_visual_0" pos="-0.061 0 0.00425" quat="1 0 0 0" type="cylinder" material="material_13" contype="0" conaffinity="0" mass="0" group="1" size="0.005 0.0275" />
+        </body>
+        <body name="support_front_right_link" pos="0.043 -0.05 0.145" quat="1 0 0 0">
+          <geom name="support_front_right_link_visual_0" pos="-0.061 0 0.00425" quat="1 0 0 0" type="cylinder" material="material_13" contype="0" conaffinity="0" mass="0" group="1" size="0.005 0.0275" />
+        </body>
+        <body name="support_back_left_link" pos="-0.182 0.05 0.145" quat="1 0 0 0">
+          <geom name="support_back_left_link_visual_0" pos="0.036 0 0.00425" quat="1 0 0 0" type="cylinder" material="material_13" contype="0" conaffinity="0" mass="0" group="1" size="0.005 0.0275" />
+        </body>
+        <body name="support_back_right_link" pos="-0.182 -0.05 0.145" quat="1 0 0 0">
+          <geom name="support_back_right_link_visual_0" pos="0.036 0 0.00425" quat="1 0 0 0" type="cylinder" material="material_13" contype="0" conaffinity="0" mass="0" group="1" size="0.005 0.0275" />
+        </body>
+        <body name="upper_waffle_plate" pos="-0.092 0 0.18125" quat="1 0 0 0">
+          <geom name="upper_waffle_plate_visual_0" pos="0.028 0 0" quat="1 0 0 0" type="mesh" material="material_0" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_6" />
+          <body name="upper_waffle_plate__visual_1" pos="0 0 0" quat="1 0 0 0">
+            <geom name="upper_waffle_plate__visual_1_visual_0" pos="0.105 0 0.007" quat="1 0 0 0" type="box" material="material_14" contype="0" conaffinity="0" mass="0" group="1" size="0.015 0.013 0.002" />
+          </body>
+        </body>
+        <body name="link1" pos="-0.128 0 0.18175" quat="1 0 0 0">
+          <geom name="link1_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_15" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_7" />
+          <body name="link2" pos="0.012 0 0.017" quat="1 0 0 0">
+            <joint name="joint1" axis="0 0 1" type="hinge" range="-3.14159265359 3.14159265359" />
+            <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+            <geom name="link2_visual_0" pos="0 0 0.019" quat="1 0 0 0" type="mesh" material="material_15" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_8" />
+            <body name="link3" pos="0 0 0.0595" quat="1 0 0 0">
+              <joint name="joint2" axis="0 1 0" type="hinge" range="-1.79070781255 1.57079632679" />
+              <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+              <geom name="link3_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_15" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_9" />
+              <body name="link4" pos="0.024 0 0.128" quat="1 0 0 0">
+                <joint name="joint3" axis="0 1 0" type="hinge" range="-0.942477796077 1.38230076758" />
+                <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+                <geom name="link4_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_15" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_10" />
+                <body name="link5" pos="0.124 0 0" quat="1 0 0 0">
+                  <joint name="joint4" axis="0 1 0" type="hinge" range="-1.79070781255 2.04203522483" />
+                  <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+                  <geom name="link5_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_15" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_11" />
+                  <body name="gripper_left_link" pos="0.0817 0.021 0" quat="1 0 0 0">
+                    <joint name="gripper_left_joint" axis="0 1 0" type="slide" range="-0.01 0.019" />
+                    <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+                    <geom name="gripper_left_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_15" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_12" />
+                  </body>
+                  <body name="dummy_mimic_fix" pos="0 0 0" quat="1 0 0 0">
+                    <body name="eef_usb_camera_link" pos="0.02 0 0.065" quat="1 0 0 0">
+                      <geom name="eef_usb_camera_link_visual_0" pos="0.025 0 0" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.025 0.029 0.016" />
+                      <geom name="eef_usb_camera_link_visual_1" pos="0.025 0.029 0" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.016 0.025" />
+                      <geom name="eef_usb_camera_link_visual_2" pos="0.025 -0.029 0" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.016 0.025" />
+                      <geom name="eef_usb_camera_link_visual_3" pos="0.013 0 -0.0375" quat="1 0 0 0" type="box" material="material_1" contype="0" conaffinity="0" mass="0" group="1" size="0.013 0.015 0.0215" />
+                      <body name="eef_usb_camera_optical_frame" pos="0 0 0" quat="0.5 -0.5 0.5 -0.5" />
+                      <body name="eef_usb_camera_link__visual_1" pos="0 0 0" quat="1 0 0 0">
+                        <geom name="eef_usb_camera_link__visual_1_visual_0" pos="0.051 0 0" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_7" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.0015" />
+                      </body>
+                      <body name="eef_usb_camera_link__visual_2" pos="0 0 0" quat="1 0 0 0">
+                        <geom name="eef_usb_camera_link__visual_2_visual_0" pos="0.052 0 0" quat="0.707106781187 0 0.707106781187 0" type="cylinder" material="material_2" contype="0" conaffinity="0" mass="0" group="1" size="0.007 0.002" />
+                      </body>
+                    </body>
+                  </body>
+                  <body name="gripper_right_link" pos="0.0817 -0.021 0" quat="1 0 0 0">
+                    <joint name="gripper_right_joint" axis="0 -1 0" type="slide" range="-0.01 0.019" />
+                    <inertial pos="0 0 0" mass="0.1" diaginertia=".0001 .0001 .0001" />
+                    <geom name="gripper_right_link_visual_0" pos="0 0 0" quat="1 0 0 0" type="mesh" material="material_15" contype="0" conaffinity="0" mass="0" group="1" mesh="mesh_13" />
+                  </body>
+                  <body name="end_effector_link" pos="0.126 0 0" quat="1 0 0 0" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="base_link__visual_1" pos="0 0 0" quat="1 0 0 0">
+          <geom name="base_link__visual_1_visual_0" pos="0.018 0.04 0.02875" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.02" />
+          <geom name="base_link__visual_1_visual_1" pos="0.018 -0.04 0.02875" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.02" />
+          <geom name="base_link__visual_1_visual_2" pos="0.018 0.05 0.08525" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.0275" />
+          <geom name="base_link__visual_1_visual_3" pos="0.018 -0.05 0.08525" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.0275" />
+          <geom name="base_link__visual_1_visual_4" pos="-0.146 0.04 0.02875" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.02" />
+          <geom name="base_link__visual_1_visual_5" pos="-0.146 -0.04 0.02875" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.02" />
+          <geom name="base_link__visual_1_visual_6" pos="-0.146 0.05 0.08525" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.0275" />
+          <geom name="base_link__visual_1_visual_7" pos="-0.146 -0.05 0.08525" quat="1 0 0 0" type="cylinder" material="material_4" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.0275" />
+        </body>
+      </body>
+      <body name="shelf_support" pos="0.3 0 0" quat="1 0 0 0">
+        <geom name="shelf_support_visual_0" pos="0 0 0.05" quat="1 0 0 0" type="box" material="material_16" contype="0" conaffinity="0" mass="0" group="1" size="0.2 0.2 0.05" />
+        <body name="shelf_support_top" pos="0 0 0.1" quat="1 0 0 0">
+          <body name="shelf_origin" pos="0 0 0" quat="1 0 0 0">
+            <body name="shelf_level_1" pos="0 0 0" quat="1 0 0 0">
+              <geom name="shelf_level_1_visual_0" pos="0 0 0.026" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.1825 0.002" />
+              <geom name="shelf_level_1_visual_1" pos="-0.1325 -0.1745 0.012" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.008 0.012" />
+              <geom name="shelf_level_1_visual_2" pos="-0.1325 0.1745 0.012" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.008 0.012" />
+              <geom name="shelf_level_1_visual_3" pos="0.1325 -0.1745 0.012" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.008 0.012" />
+              <geom name="shelf_level_1_visual_4" pos="0.1325 0.1745 0.012" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.008 0.012" />
+              <geom name="shelf_level_1_visual_5" pos="-0.1325 0 0.031" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.1825 0.003" />
+              <geom name="shelf_level_1_visual_6" pos="0 -0.1795 0.032" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_7" pos="0 -0.1795 0.068" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_8" pos="0 -0.1795 0.104" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_9" pos="0 -0.1795 0.14" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_10" pos="0 -0.1795 0.176" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_11" pos="-0.1385 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_12" pos="-0.1385 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_13" pos="-0.1385 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_14" pos="-0.1385 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_15" pos="-0.123111111111 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_16" pos="-0.123111111111 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_17" pos="-0.123111111111 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_18" pos="-0.123111111111 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_19" pos="-0.107722222222 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_20" pos="-0.107722222222 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_21" pos="-0.107722222222 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_22" pos="-0.107722222222 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_23" pos="-0.0923333333333 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_24" pos="-0.0923333333333 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_25" pos="-0.0923333333333 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_26" pos="-0.0923333333333 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_27" pos="-0.0769444444444 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_28" pos="-0.0769444444444 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_29" pos="-0.0769444444444 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_30" pos="-0.0769444444444 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_31" pos="-0.0615555555556 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_32" pos="-0.0615555555556 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_33" pos="-0.0615555555556 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_34" pos="-0.0615555555556 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_35" pos="-0.0461666666667 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_36" pos="-0.0461666666667 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_37" pos="-0.0461666666667 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_38" pos="-0.0461666666667 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_39" pos="-0.0307777777778 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_40" pos="-0.0307777777778 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_41" pos="-0.0307777777778 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_42" pos="-0.0307777777778 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_43" pos="-0.0153888888889 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_44" pos="-0.0153888888889 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_45" pos="-0.0153888888889 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_46" pos="-0.0153888888889 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_47" pos="0 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_48" pos="0 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_49" pos="0 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_50" pos="0 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_51" pos="0.0153888888889 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_52" pos="0.0153888888889 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_53" pos="0.0153888888889 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_54" pos="0.0153888888889 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_55" pos="0.0307777777778 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_56" pos="0.0307777777778 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_57" pos="0.0307777777778 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_58" pos="0.0307777777778 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_59" pos="0.0461666666667 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_60" pos="0.0461666666667 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_61" pos="0.0461666666667 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_62" pos="0.0461666666667 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_63" pos="0.0615555555556 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_64" pos="0.0615555555556 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_65" pos="0.0615555555556 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_66" pos="0.0615555555556 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_67" pos="0.0769444444444 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_68" pos="0.0769444444444 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_69" pos="0.0769444444444 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_70" pos="0.0769444444444 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_71" pos="0.0923333333333 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_72" pos="0.0923333333333 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_73" pos="0.0923333333333 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_74" pos="0.0923333333333 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_75" pos="0.107722222222 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_76" pos="0.107722222222 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_77" pos="0.107722222222 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_78" pos="0.107722222222 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_79" pos="0.123111111111 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_80" pos="0.123111111111 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_81" pos="0.123111111111 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_82" pos="0.123111111111 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_83" pos="0.1385 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_84" pos="0.1385 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_85" pos="0.1385 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_86" pos="0.1385 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_87" pos="0 0.1795 0.032" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_88" pos="0 0.1795 0.068" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_89" pos="0 0.1795 0.104" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_90" pos="0 0.1795 0.14" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_91" pos="0 0.1795 0.176" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_1_visual_92" pos="-0.1385 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_93" pos="-0.1385 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_94" pos="-0.1385 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_95" pos="-0.1385 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_96" pos="-0.123111111111 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_97" pos="-0.123111111111 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_98" pos="-0.123111111111 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_99" pos="-0.123111111111 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_100" pos="-0.107722222222 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_101" pos="-0.107722222222 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_102" pos="-0.107722222222 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_103" pos="-0.107722222222 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_104" pos="-0.0923333333333 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_105" pos="-0.0923333333333 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_106" pos="-0.0923333333333 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_107" pos="-0.0923333333333 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_108" pos="-0.0769444444444 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_109" pos="-0.0769444444444 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_110" pos="-0.0769444444444 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_111" pos="-0.0769444444444 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_112" pos="-0.0615555555556 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_113" pos="-0.0615555555556 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_114" pos="-0.0615555555556 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_115" pos="-0.0615555555556 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_116" pos="-0.0461666666667 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_117" pos="-0.0461666666667 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_118" pos="-0.0461666666667 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_119" pos="-0.0461666666667 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_120" pos="-0.0307777777778 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_121" pos="-0.0307777777778 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_122" pos="-0.0307777777778 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_123" pos="-0.0307777777778 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_124" pos="-0.0153888888889 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_125" pos="-0.0153888888889 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_126" pos="-0.0153888888889 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_127" pos="-0.0153888888889 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_128" pos="0 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_129" pos="0 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_130" pos="0 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_131" pos="0 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_132" pos="0.0153888888889 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_133" pos="0.0153888888889 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_134" pos="0.0153888888889 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_135" pos="0.0153888888889 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_136" pos="0.0307777777778 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_137" pos="0.0307777777778 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_138" pos="0.0307777777778 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_139" pos="0.0307777777778 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_140" pos="0.0461666666667 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_141" pos="0.0461666666667 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_142" pos="0.0461666666667 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_143" pos="0.0461666666667 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_144" pos="0.0615555555556 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_145" pos="0.0615555555556 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_146" pos="0.0615555555556 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_147" pos="0.0615555555556 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_148" pos="0.0769444444444 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_149" pos="0.0769444444444 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_150" pos="0.0769444444444 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_151" pos="0.0769444444444 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_152" pos="0.0923333333333 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_153" pos="0.0923333333333 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_154" pos="0.0923333333333 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_155" pos="0.0923333333333 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_156" pos="0.107722222222 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_157" pos="0.107722222222 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_158" pos="0.107722222222 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_159" pos="0.107722222222 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_160" pos="0.123111111111 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_161" pos="0.123111111111 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_162" pos="0.123111111111 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_163" pos="0.123111111111 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_164" pos="0.1385 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_165" pos="0.1385 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_166" pos="0.1385 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_167" pos="0.1385 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_1_visual_168" pos="0.1395 0 0.032" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_1_visual_169" pos="0.1395 0 0.068" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_1_visual_170" pos="0.1395 0 0.104" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_1_visual_171" pos="0.1395 0 0.14" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_1_visual_172" pos="0.1395 0 0.176" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_1_visual_173" pos="0.1395 -0.1785 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_174" pos="0.1395 -0.1785 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_175" pos="0.1395 -0.1785 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_176" pos="0.1395 -0.1785 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_177" pos="0.1395 -0.16297826087 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_178" pos="0.1395 -0.16297826087 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_179" pos="0.1395 -0.16297826087 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_180" pos="0.1395 -0.16297826087 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_181" pos="0.1395 -0.147456521739 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_182" pos="0.1395 -0.147456521739 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_183" pos="0.1395 -0.147456521739 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_184" pos="0.1395 -0.147456521739 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_185" pos="0.1395 -0.131934782609 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_186" pos="0.1395 -0.131934782609 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_187" pos="0.1395 -0.131934782609 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_188" pos="0.1395 -0.131934782609 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_189" pos="0.1395 -0.116413043478 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_190" pos="0.1395 -0.116413043478 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_191" pos="0.1395 -0.116413043478 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_192" pos="0.1395 -0.116413043478 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_193" pos="0.1395 -0.100891304348 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_194" pos="0.1395 -0.100891304348 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_195" pos="0.1395 -0.100891304348 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_196" pos="0.1395 -0.100891304348 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_197" pos="0.1395 -0.0853695652174 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_198" pos="0.1395 -0.0853695652174 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_199" pos="0.1395 -0.0853695652174 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_200" pos="0.1395 -0.0853695652174 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_201" pos="0.1395 -0.069847826087 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_202" pos="0.1395 -0.069847826087 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_203" pos="0.1395 -0.069847826087 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_204" pos="0.1395 -0.069847826087 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_205" pos="0.1395 -0.0543260869565 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_206" pos="0.1395 -0.0543260869565 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_207" pos="0.1395 -0.0543260869565 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_208" pos="0.1395 -0.0543260869565 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_209" pos="0.1395 -0.0388043478261 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_210" pos="0.1395 -0.0388043478261 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_211" pos="0.1395 -0.0388043478261 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_212" pos="0.1395 -0.0388043478261 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_213" pos="0.1395 -0.0232826086957 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_214" pos="0.1395 -0.0232826086957 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_215" pos="0.1395 -0.0232826086957 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_216" pos="0.1395 -0.0232826086957 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_217" pos="0.1395 -0.00776086956522 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_218" pos="0.1395 -0.00776086956522 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_219" pos="0.1395 -0.00776086956522 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_220" pos="0.1395 -0.00776086956522 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_221" pos="0.1395 0.00776086956522 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_222" pos="0.1395 0.00776086956522 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_223" pos="0.1395 0.00776086956522 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_224" pos="0.1395 0.00776086956522 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_225" pos="0.1395 0.0232826086957 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_226" pos="0.1395 0.0232826086957 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_227" pos="0.1395 0.0232826086957 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_228" pos="0.1395 0.0232826086957 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_229" pos="0.1395 0.0388043478261 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_230" pos="0.1395 0.0388043478261 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_231" pos="0.1395 0.0388043478261 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_232" pos="0.1395 0.0388043478261 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_233" pos="0.1395 0.0543260869565 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_234" pos="0.1395 0.0543260869565 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_235" pos="0.1395 0.0543260869565 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_236" pos="0.1395 0.0543260869565 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_237" pos="0.1395 0.069847826087 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_238" pos="0.1395 0.069847826087 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_239" pos="0.1395 0.069847826087 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_240" pos="0.1395 0.069847826087 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_241" pos="0.1395 0.0853695652174 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_242" pos="0.1395 0.0853695652174 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_243" pos="0.1395 0.0853695652174 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_244" pos="0.1395 0.0853695652174 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_245" pos="0.1395 0.100891304348 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_246" pos="0.1395 0.100891304348 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_247" pos="0.1395 0.100891304348 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_248" pos="0.1395 0.100891304348 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_249" pos="0.1395 0.116413043478 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_250" pos="0.1395 0.116413043478 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_251" pos="0.1395 0.116413043478 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_252" pos="0.1395 0.116413043478 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_253" pos="0.1395 0.131934782609 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_254" pos="0.1395 0.131934782609 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_255" pos="0.1395 0.131934782609 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_256" pos="0.1395 0.131934782609 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_257" pos="0.1395 0.147456521739 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_258" pos="0.1395 0.147456521739 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_259" pos="0.1395 0.147456521739 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_260" pos="0.1395 0.147456521739 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_261" pos="0.1395 0.16297826087 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_262" pos="0.1395 0.16297826087 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_263" pos="0.1395 0.16297826087 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_264" pos="0.1395 0.16297826087 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_265" pos="0.1395 0.1785 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_266" pos="0.1395 0.1785 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_267" pos="0.1395 0.1785 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_1_visual_268" pos="0.1395 0.1785 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <body name="shelf_floor_1" pos="0 0 0.028" quat="1 0 0 0" />
+            </body>
+            <body name="shelf_level_2" pos="0 0 0.156" quat="1 0 0 0">
+              <geom name="shelf_level_2_visual_0" pos="0 0 0.026" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.1825 0.002" />
+              <geom name="shelf_level_2_visual_1" pos="-0.1325 -0.1745 0.012" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.008 0.012" />
+              <geom name="shelf_level_2_visual_2" pos="-0.1325 0.1745 0.012" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.008 0.012" />
+              <geom name="shelf_level_2_visual_3" pos="0.1325 -0.1745 0.012" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.008 0.012" />
+              <geom name="shelf_level_2_visual_4" pos="0.1325 0.1745 0.012" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.008 0.012" />
+              <geom name="shelf_level_2_visual_5" pos="-0.1325 0 0.031" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.01 0.1825 0.003" />
+              <geom name="shelf_level_2_visual_6" pos="0 -0.1795 0.032" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_7" pos="0 -0.1795 0.068" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_8" pos="0 -0.1795 0.104" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_9" pos="0 -0.1795 0.14" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_10" pos="0 -0.1795 0.176" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_11" pos="-0.1385 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_12" pos="-0.1385 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_13" pos="-0.1385 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_14" pos="-0.1385 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_15" pos="-0.123111111111 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_16" pos="-0.123111111111 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_17" pos="-0.123111111111 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_18" pos="-0.123111111111 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_19" pos="-0.107722222222 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_20" pos="-0.107722222222 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_21" pos="-0.107722222222 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_22" pos="-0.107722222222 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_23" pos="-0.0923333333333 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_24" pos="-0.0923333333333 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_25" pos="-0.0923333333333 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_26" pos="-0.0923333333333 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_27" pos="-0.0769444444444 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_28" pos="-0.0769444444444 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_29" pos="-0.0769444444444 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_30" pos="-0.0769444444444 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_31" pos="-0.0615555555556 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_32" pos="-0.0615555555556 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_33" pos="-0.0615555555556 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_34" pos="-0.0615555555556 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_35" pos="-0.0461666666667 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_36" pos="-0.0461666666667 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_37" pos="-0.0461666666667 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_38" pos="-0.0461666666667 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_39" pos="-0.0307777777778 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_40" pos="-0.0307777777778 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_41" pos="-0.0307777777778 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_42" pos="-0.0307777777778 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_43" pos="-0.0153888888889 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_44" pos="-0.0153888888889 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_45" pos="-0.0153888888889 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_46" pos="-0.0153888888889 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_47" pos="0 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_48" pos="0 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_49" pos="0 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_50" pos="0 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_51" pos="0.0153888888889 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_52" pos="0.0153888888889 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_53" pos="0.0153888888889 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_54" pos="0.0153888888889 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_55" pos="0.0307777777778 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_56" pos="0.0307777777778 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_57" pos="0.0307777777778 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_58" pos="0.0307777777778 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_59" pos="0.0461666666667 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_60" pos="0.0461666666667 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_61" pos="0.0461666666667 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_62" pos="0.0461666666667 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_63" pos="0.0615555555556 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_64" pos="0.0615555555556 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_65" pos="0.0615555555556 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_66" pos="0.0615555555556 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_67" pos="0.0769444444444 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_68" pos="0.0769444444444 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_69" pos="0.0769444444444 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_70" pos="0.0769444444444 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_71" pos="0.0923333333333 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_72" pos="0.0923333333333 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_73" pos="0.0923333333333 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_74" pos="0.0923333333333 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_75" pos="0.107722222222 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_76" pos="0.107722222222 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_77" pos="0.107722222222 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_78" pos="0.107722222222 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_79" pos="0.123111111111 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_80" pos="0.123111111111 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_81" pos="0.123111111111 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_82" pos="0.123111111111 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_83" pos="0.1385 -0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_84" pos="0.1385 -0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_85" pos="0.1385 -0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_86" pos="0.1385 -0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_87" pos="0 0.1795 0.032" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_88" pos="0 0.1795 0.068" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_89" pos="0 0.1795 0.104" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_90" pos="0 0.1795 0.14" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_91" pos="0 0.1795 0.176" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.1425 0.003 0.004" />
+              <geom name="shelf_level_2_visual_92" pos="-0.1385 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_93" pos="-0.1385 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_94" pos="-0.1385 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_95" pos="-0.1385 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_96" pos="-0.123111111111 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_97" pos="-0.123111111111 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_98" pos="-0.123111111111 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_99" pos="-0.123111111111 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_100" pos="-0.107722222222 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_101" pos="-0.107722222222 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_102" pos="-0.107722222222 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_103" pos="-0.107722222222 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_104" pos="-0.0923333333333 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_105" pos="-0.0923333333333 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_106" pos="-0.0923333333333 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_107" pos="-0.0923333333333 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_108" pos="-0.0769444444444 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_109" pos="-0.0769444444444 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_110" pos="-0.0769444444444 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_111" pos="-0.0769444444444 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_112" pos="-0.0615555555556 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_113" pos="-0.0615555555556 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_114" pos="-0.0615555555556 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_115" pos="-0.0615555555556 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_116" pos="-0.0461666666667 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_117" pos="-0.0461666666667 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_118" pos="-0.0461666666667 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_119" pos="-0.0461666666667 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_120" pos="-0.0307777777778 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_121" pos="-0.0307777777778 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_122" pos="-0.0307777777778 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_123" pos="-0.0307777777778 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_124" pos="-0.0153888888889 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_125" pos="-0.0153888888889 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_126" pos="-0.0153888888889 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_127" pos="-0.0153888888889 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_128" pos="0 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_129" pos="0 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_130" pos="0 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_131" pos="0 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_132" pos="0.0153888888889 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_133" pos="0.0153888888889 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_134" pos="0.0153888888889 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_135" pos="0.0153888888889 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_136" pos="0.0307777777778 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_137" pos="0.0307777777778 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_138" pos="0.0307777777778 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_139" pos="0.0307777777778 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_140" pos="0.0461666666667 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_141" pos="0.0461666666667 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_142" pos="0.0461666666667 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_143" pos="0.0461666666667 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_144" pos="0.0615555555556 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_145" pos="0.0615555555556 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_146" pos="0.0615555555556 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_147" pos="0.0615555555556 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_148" pos="0.0769444444444 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_149" pos="0.0769444444444 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_150" pos="0.0769444444444 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_151" pos="0.0769444444444 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_152" pos="0.0923333333333 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_153" pos="0.0923333333333 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_154" pos="0.0923333333333 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_155" pos="0.0923333333333 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_156" pos="0.107722222222 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_157" pos="0.107722222222 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_158" pos="0.107722222222 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_159" pos="0.107722222222 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_160" pos="0.123111111111 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_161" pos="0.123111111111 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_162" pos="0.123111111111 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_163" pos="0.123111111111 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_164" pos="0.1385 0.1795 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_165" pos="0.1385 0.1795 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_166" pos="0.1385 0.1795 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_167" pos="0.1385 0.1795 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.002 0.003 0.014" />
+              <geom name="shelf_level_2_visual_168" pos="0.1395 0 0.032" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_2_visual_169" pos="0.1395 0 0.068" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_2_visual_170" pos="0.1395 0 0.104" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_2_visual_171" pos="0.1395 0 0.14" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_2_visual_172" pos="0.1395 0 0.176" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.1825 0.004" />
+              <geom name="shelf_level_2_visual_173" pos="0.1395 -0.1785 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_174" pos="0.1395 -0.1785 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_175" pos="0.1395 -0.1785 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_176" pos="0.1395 -0.1785 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_177" pos="0.1395 -0.16297826087 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_178" pos="0.1395 -0.16297826087 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_179" pos="0.1395 -0.16297826087 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_180" pos="0.1395 -0.16297826087 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_181" pos="0.1395 -0.147456521739 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_182" pos="0.1395 -0.147456521739 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_183" pos="0.1395 -0.147456521739 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_184" pos="0.1395 -0.147456521739 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_185" pos="0.1395 -0.131934782609 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_186" pos="0.1395 -0.131934782609 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_187" pos="0.1395 -0.131934782609 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_188" pos="0.1395 -0.131934782609 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_189" pos="0.1395 -0.116413043478 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_190" pos="0.1395 -0.116413043478 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_191" pos="0.1395 -0.116413043478 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_192" pos="0.1395 -0.116413043478 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_193" pos="0.1395 -0.100891304348 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_194" pos="0.1395 -0.100891304348 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_195" pos="0.1395 -0.100891304348 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_196" pos="0.1395 -0.100891304348 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_197" pos="0.1395 -0.0853695652174 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_198" pos="0.1395 -0.0853695652174 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_199" pos="0.1395 -0.0853695652174 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_200" pos="0.1395 -0.0853695652174 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_201" pos="0.1395 -0.069847826087 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_202" pos="0.1395 -0.069847826087 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_203" pos="0.1395 -0.069847826087 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_204" pos="0.1395 -0.069847826087 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_205" pos="0.1395 -0.0543260869565 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_206" pos="0.1395 -0.0543260869565 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_207" pos="0.1395 -0.0543260869565 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_208" pos="0.1395 -0.0543260869565 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_209" pos="0.1395 -0.0388043478261 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_210" pos="0.1395 -0.0388043478261 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_211" pos="0.1395 -0.0388043478261 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_212" pos="0.1395 -0.0388043478261 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_213" pos="0.1395 -0.0232826086957 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_214" pos="0.1395 -0.0232826086957 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_215" pos="0.1395 -0.0232826086957 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_216" pos="0.1395 -0.0232826086957 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_217" pos="0.1395 -0.00776086956522 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_218" pos="0.1395 -0.00776086956522 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_219" pos="0.1395 -0.00776086956522 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_220" pos="0.1395 -0.00776086956522 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_221" pos="0.1395 0.00776086956522 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_222" pos="0.1395 0.00776086956522 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_223" pos="0.1395 0.00776086956522 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_224" pos="0.1395 0.00776086956522 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_225" pos="0.1395 0.0232826086957 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_226" pos="0.1395 0.0232826086957 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_227" pos="0.1395 0.0232826086957 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_228" pos="0.1395 0.0232826086957 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_229" pos="0.1395 0.0388043478261 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_230" pos="0.1395 0.0388043478261 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_231" pos="0.1395 0.0388043478261 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_232" pos="0.1395 0.0388043478261 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_233" pos="0.1395 0.0543260869565 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_234" pos="0.1395 0.0543260869565 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_235" pos="0.1395 0.0543260869565 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_236" pos="0.1395 0.0543260869565 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_237" pos="0.1395 0.069847826087 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_238" pos="0.1395 0.069847826087 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_239" pos="0.1395 0.069847826087 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_240" pos="0.1395 0.069847826087 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_241" pos="0.1395 0.0853695652174 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_242" pos="0.1395 0.0853695652174 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_243" pos="0.1395 0.0853695652174 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_244" pos="0.1395 0.0853695652174 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_245" pos="0.1395 0.100891304348 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_246" pos="0.1395 0.100891304348 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_247" pos="0.1395 0.100891304348 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_248" pos="0.1395 0.100891304348 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_249" pos="0.1395 0.116413043478 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_250" pos="0.1395 0.116413043478 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_251" pos="0.1395 0.116413043478 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_252" pos="0.1395 0.116413043478 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_253" pos="0.1395 0.131934782609 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_254" pos="0.1395 0.131934782609 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_255" pos="0.1395 0.131934782609 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_256" pos="0.1395 0.131934782609 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_257" pos="0.1395 0.147456521739 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_258" pos="0.1395 0.147456521739 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_259" pos="0.1395 0.147456521739 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_260" pos="0.1395 0.147456521739 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_261" pos="0.1395 0.16297826087 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_262" pos="0.1395 0.16297826087 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_263" pos="0.1395 0.16297826087 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_264" pos="0.1395 0.16297826087 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_265" pos="0.1395 0.1785 0.05" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_266" pos="0.1395 0.1785 0.086" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_267" pos="0.1395 0.1785 0.122" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <geom name="shelf_level_2_visual_268" pos="0.1395 0.1785 0.158" quat="1 0 0 0" type="box" material="material_17" contype="0" conaffinity="0" mass="0" group="1" size="0.003 0.002 0.014" />
+              <body name="shelf_floor_2" pos="0 0 0.028" quat="1 0 0 0" />
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="object_1" mocap="true" pos="0.24 -0.08 0.153">
+      <geom type="box" size=".0275 .0275 .025" rgba="0.886 0.631 0.498 1" contype="0" conaffinity="0" />
+      <geom type="box" size=".0003 .0266665 .0266665" pos="-.0278 0 0" rgba="1 1 1 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+    </body>
+    <body name="object_2" mocap="true" pos="0.24 0.08 0.153">
+      <geom type="box" size=".0275 .0275 .025" rgba="0.541 0.745 0.702 1" contype="0" conaffinity="0" />
+      <geom type="box" size=".0003 .0266665 .0266665" pos="-.0278 0 0" rgba="1 1 1 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+    </body>
+    <body name="object_3" mocap="true" pos="0.24 -0.08 0.309">
+      <geom type="box" size=".0275 .0275 .025" rgba="0.655 0.631 0.796 1" contype="0" conaffinity="0" />
+      <geom type="box" size=".0003 .0266665 .0266665" pos="-.0278 0 0" rgba="1 1 1 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+    </body>
+    <body name="object_4" mocap="true" pos="0.24 0.08 0.309">
+      <geom type="box" size=".0275 .0275 .025" rgba="0.843 0.745 0.51 1" contype="0" conaffinity="0" />
+      <geom type="box" size=".0003 .0266665 .0266665" pos="-.0278 0 0" rgba="1 1 1 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.00333333333333" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.01" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.0166666666667 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.01 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 0.00333333333333 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.00333333333333 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.01 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+      <geom type="box" size="0.0002 0.00333333333333 0.00333333333333" pos="-0.0282 -0.0166666666667 -0.0166666666667" rgba=".01 .01 .01 1" contype="0" conaffinity="0" />
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="joint1" joint="joint1" kp="1" ctrlrange="-3.14159265359 3.14159265359" />
+    <position name="joint2" joint="joint2" kp="1" ctrlrange="-1.79070781255 1.57079632679" />
+    <position name="joint3" joint="joint3" kp="1" ctrlrange="-0.942477796077 1.38230076758" />
+    <position name="joint4" joint="joint4" kp="1" ctrlrange="-1.79070781255 2.04203522483" />
+    <position name="gripper_left_joint" joint="gripper_left_joint" kp="1" ctrlrange="-0.01 0.019" />
+  </actuator>
+  <keyframe>
+    <key name="stay" qpos="0 0 0 0 0 0 0.104311 0.027612 -0.001534 -1.638291 0.019 0.019" ctrl="0.104311 0.027612 -0.001534 -1.638291 0.019" />
+  </keyframe>
+</mujoco>

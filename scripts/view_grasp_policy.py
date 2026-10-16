@@ -18,6 +18,7 @@ from stable_baselines3 import PPO
 
 from envs import load_config, make_grasp_env
 from envs.factory import DEFAULT_CONFIG
+from twin_style import add_grid, apply_style, set_camera
 
 
 DEFAULT_POLICY = (
@@ -51,6 +52,7 @@ def main() -> None:
 
     config = load_config(args.config)
     env = make_grasp_env(config, stage_name=args.stage)
+    apply_style(env.model)
     policy_path = args.policy.expanduser().resolve()
     model = PPO.load(policy_path, device="cpu")
     rng = np.random.default_rng(args.seed)
@@ -61,10 +63,9 @@ def main() -> None:
     print("Close the MuJoCo window to stop replay.")
 
     with mujoco.viewer.launch_passive(env.model, env.data) as viewer:
-        viewer.cam.lookat[:] = np.array([0.10, 0.0, 0.16])
-        viewer.cam.distance = 1.05
-        viewer.cam.azimuth = 135.0
-        viewer.cam.elevation = -22.0
+        set_camera(viewer.cam)
+        with viewer.lock():
+            add_grid(viewer.user_scn)
 
         episode = 0
         while viewer.is_running():
